@@ -40,10 +40,13 @@ public class TranslatorOptions {
 		switch(propertyName) {
 		case "formatter":
 			formatter = Boolean.parseBoolean(propertyValue);
+			break;
 		case "shuffleRandom":
 			formatter = Boolean.parseBoolean(propertyValue);
+			break;
 		case "optimizeSeqMacroRule":
 			optimizeSeqMacroRule = Boolean.parseBoolean(propertyValue);
+			break;
 		}
 	
 	}

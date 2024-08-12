@@ -114,10 +114,25 @@ public class MainClass {
 				.desc("output folder")
 				.build();
 		
+		// property
+		Option property = Option.builder("D")
+				.numberOfArgs(2)
+				.argName("property=value")
+				.valueSeparator('=')
+				.required(false)
+				.optionalArg(false)
+				.type(String.class)
+				.desc("use value for given translator property:\n"
+						+ "formatter=true/false (if you want the code to be formatted),\n"
+						+ " shuffleRandom=true/false (use random shuffle),\n"
+						+ " optimizeSeqMacroRule=true/false (if true -> only those used (to improve code coverage))")
+				.build();
+		
 		options.addOption(help);
 		options.addOption(input);
 		options.addOption(output);
-		
+		options.addOption(property);
+
 		return options;
 	}
 
