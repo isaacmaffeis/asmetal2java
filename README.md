@@ -42,10 +42,10 @@ of tools for creating, simulating, verifying, and analyzing ASM models.
     mvn clean package
     ```
 
-4. Generate the executable JAR file with all dependencies included:
+4. Generate and install the executable JAR file with all dependencies included:
      ```shell
      cd ../asmetal2java_codegen
-     mvn clean package
+     mvn clean install
      ```
 
 5. Start the application by running the generated JAR file:
