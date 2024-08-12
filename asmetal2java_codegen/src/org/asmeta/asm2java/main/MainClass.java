@@ -1,6 +1,12 @@
 package org.asmeta.asm2java.main;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
@@ -49,11 +55,11 @@ public class MainClass {
 		String dirCompilazione = asmFile.getParentFile().getPath() + "/compilazione";
 
 		// AC
-		File javaFile = new File(outputFolder + File.separator + name + ".java");
-//		File javaFile = new File(dir.getPath() + File.separator + name + ".java");
+		File javaFile = new File(SRC_GEN + File.separator + name + ".java");
+    //File javaFile = new File(dir.getPath() + File.separator + name + ".java");
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
 
-		// Se il file java esiste di gi , lo cancella
+		// Se il file java esiste di gia, lo cancella
 
 		if (javaFile.exists())
 			javaFile.delete();
@@ -64,13 +70,6 @@ public class MainClass {
 		assert !javaFileCompilazione.exists();
 
 		System.out.println("\n\n===" + name + " ===================");
-
-		try {
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new CompileResult(false, e.getMessage());
-		}
 
 		// write java
 
@@ -85,6 +84,29 @@ public class MainClass {
 
 		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
+
+		// copy the file.java into the outputFolder
+		File javaOutFile = new File(outputFolder + File.separator + name + ".java");
+		assert dir.exists() && dir.isDirectory();
+		try (
+				InputStream in = new BufferedInputStream(
+            Files.newInputStream(javaFile.toPath()));
+				OutputStream out = new BufferedOutputStream(
+            Files.newOutputStream(javaOutFile.toPath()))) {
+
+			byte[] buffer = new byte[1024];
+			int lengthRead;
+			while ((lengthRead = in.read(buffer)) > 0) {
+				out.write(buffer, 0, lengthRead);
+				out.flush();
+			}
+		} catch (NoSuchFileException e){
+			logger.error("Export Failed. Please specify an existing output folder...");
+			e.printStackTrace();
+		}
+		catch (Exception e){
+			e.printStackTrace();
+		}
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
 
@@ -103,7 +125,7 @@ public class MainClass {
 				  .argName("input")
 				  .type(String.class)
 				  .hasArg(true)
-				  .desc("asm input file")
+				  .desc("The ASM input file (required)")
 				  .build();
 		
 		// output directory
@@ -111,7 +133,7 @@ public class MainClass {
 				.argName("output")
 				.type(String.class)
 				.hasArg(true)
-				.desc("output folder")
+				.desc("The output folder (optional, defaults to `./output/`)")
 				.build();
 		
 		// property
@@ -122,7 +144,7 @@ public class MainClass {
 				.required(false)
 				.optionalArg(false)
 				.type(String.class)
-				.desc("use value for given translator property:\n"
+				.desc("use value for given translator property (optional):\n"
 						+ "formatter=true/false (if you want the code to be formatted),\n"
 						+ " shuffleRandom=true/false (use random shuffle),\n"
 						+ " optimizeSeqMacroRule=true/false (if true -> only those used (to improve code coverage))")
@@ -183,13 +205,20 @@ public class MainClass {
 		
 		String outputFolder = "";
 		if(!line.hasOption("output")){
-			outputFolder = SRC_GEN;
+			outputFolder = "output/";
 		} else {
 			outputFolder = line.getOptionValue("output");
 		}
 		
 		try {
-			generate(asmspec, translatorOptions, outputFolder).getSuccess();
+			CompileResult compileResult = generate(asmspec, translatorOptions, outputFolder);
+			if(compileResult.getSuccess()){
+				logger.info("Generation succeed : " + compileResult.toString());
+			}
+			else{
+				logger.error("Generation failed : " + compileResult.toString());
+			}
+
 		} catch (Exception e) {
 			logger.error("An error occurred");
 			e.printStackTrace();
@@ -204,7 +233,7 @@ public class MainClass {
 			MainClass main = new MainClass ();
 			Options options = getCommandLineOptions();
 			CommandLine line = main.parseCommandLine(args, options);
-			System.out.println("Performing requested operation ...");
+			logger.info("Performing requested operation ...");
 			if (line == null || line.hasOption("help") || line.getOptions().length == 0) {
 				HelpFormatter formatter = new HelpFormatter();
 				// Do not sort				
