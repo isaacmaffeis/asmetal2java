@@ -34,7 +34,7 @@ jobs:
     - name: Run the Maven verify phase
       run: |
         cd ./core
-        mvn --batch-mode clean package
+        mvn --batch-mode clean install
         cd ../asmetal2java_codegen 
         mvn --batch-mode clean verify
 
