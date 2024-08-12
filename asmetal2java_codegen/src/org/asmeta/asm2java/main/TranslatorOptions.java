@@ -35,5 +35,23 @@ public class TranslatorOptions {
 	public boolean getOptimizeSeqMacroRule() {
 		return optimizeSeqMacroRule;
 	}
+	
+	public void setValue(String propertyName, String propertyValue) {
+		switch(propertyName) {
+		case "formatter":
+			formatter = Boolean.parseBoolean(propertyValue);
+			break;
+		case "shuffleRandom":
+			formatter = Boolean.parseBoolean(propertyValue);
+			break;
+		case "optimizeSeqMacroRule":
+			optimizeSeqMacroRule = Boolean.parseBoolean(propertyValue);
+			break;
+		}
+	
+	}
+	
+	
+	
 
 }

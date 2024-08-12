@@ -86,12 +86,6 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.14.0</version>
 		</dependency>
-<!--		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.2</version>
-			<scope>test</scope>
-		</dependency>-->
 		<dependency>
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
@@ -102,11 +96,6 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-<!--		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>org.eclipse.emf.common</artifactId>
-			<version>2.29.0</version>
-		</dependency>-->
 
   		<!-- Plugin dependencies -->
   		
@@ -223,28 +212,29 @@
             <artifactId>org.osgi.service.metatype.annotations</artifactId>
             <version>1.4.1</version>
         </dependency>
+        
+        <!-- Apache commons cli -->
+		<dependency>
+		  <groupId>commons-cli</groupId>
+		  <artifactId>commons-cli</artifactId>
+		  <version>1.8.0</version>
+		</dependency>
 
         <!-- ASMETA dependencies -->
 		<dependency>
   			<groupId>asmeta</groupId>
   			<artifactId>asmeta.emf</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
-  			<!--<scope>system</scope>
-      		<systemPath>C:\Users\isaac\Documents\GitHub\asmeta2java\asmetal2java\core\asmeta.emf\target\asmeta.emf-0.0.1-SNAPSHOT.jar</systemPath>
-  		--></dependency>
+		</dependency>
   		<dependency>
   			<groupId>asmeta</groupId>
   			<artifactId>asmeta.parser</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
-  			<!--<scope>system</scope>
-      		<systemPath>C:\Users\isaac\Documents\GitHub\asmeta2java\asmetal2java\core\asmeta.parser\target\asmeta.parser-0.0.1-SNAPSHOT.jar</systemPath>
-  		 --></dependency>
+		</dependency>
   		<dependency>
   			<groupId>asmeta</groupId>
   			<artifactId>asmeta.simulator</artifactId>
   			<version>0.0.1-SNAPSHOT</version>
-  			<!--<scope>system</scope>
-      		<systemPath>C:\Users\isaac\Documents\GitHub\asmeta2java\asmetal2java\core\asmeta.simulator\target\asmeta.simulator-0.0.1-SNAPSHOT.jar</systemPath>
-  		 --></dependency>
+		</dependency>
     </dependencies>
 </project>
