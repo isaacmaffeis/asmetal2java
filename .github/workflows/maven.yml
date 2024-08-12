@@ -12,7 +12,7 @@ on:
     branches: [ "main" ]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
@@ -28,7 +28,7 @@ jobs:
 
     - name: Build asmetal2java_codegen module
       run: |
-        cd ..\asmetal2java_codegen
+        cd asmetal2java_codegen
         mvn clean verify -U  # Build the asmetal2java_codegen module
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     #- name: Update dependency graph
