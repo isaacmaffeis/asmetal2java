@@ -27,13 +27,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+   # - name: Build with Maven
+   #   run: |
+   #     cd ./core
+   #     mvn --batch-mode clean package
+    - name: Run the Maven verify phase
       run: |
         cd ./core
         mvn --batch-mode clean package
-    - name: Run the Maven verify phase
-      run: |
-        cd ./asmetal2java_codegen 
+        cd ../asmetal2java_codegen 
         mvn --batch-mode clean verify
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
