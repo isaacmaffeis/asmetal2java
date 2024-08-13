@@ -45,14 +45,14 @@ public class GeneratorCompilerTest {
 		if (!test(asmspec, options).getSuccess())
 			fail();
 	}
-/*
+
 	@Test
 	public void testDado() throws IOException, Exception {
 		String asmspec = "examples/QuickSort.asm";
 		if (!test(asmspec, options).getSuccess())
 			fail();
 	}
-*/
+
 	/*
 	 * 
 	 * 
