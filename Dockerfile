@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y maven
 # Working directory for Maven
 WORKDIR /app
 
+VOLUME ["/app/asmetal2java_codegen/input"]
 VOLUME ["/app/asmetal2java_codegen/output"]
 
 COPY core/ /app/core/
