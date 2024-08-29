@@ -36,7 +36,7 @@ public class MainClass {
 	
 	private static final Logger logger = Logger.getLogger(MainClass.class);
 
-	// default input folder
+	// default output folder
 	private static final String SRC_GEN = "../asmetal2java_examples/src/";
 
 	// the generator for the code
@@ -45,7 +45,7 @@ public class MainClass {
 
 	// default translator options
 	private static TranslatorOptions translatorOptions =
-			new TranslatorOptions(true, true, true);
+			new TranslatorOptions(false, true, true);
 
 	/**
 	 * Generates Java code from an ASM specification.
@@ -57,7 +57,7 @@ public class MainClass {
 	 * @throws Exception   if an error occurs during the generation or compilation process.
 	 */
 	public static CompileResult generate(
-			String asmspec,
+      String asmspec,
 			TranslatorOptions userOptions,
 			String outputFolder)
 			throws Exception {
@@ -80,8 +80,8 @@ public class MainClass {
 
 
 		// AC
-		File javaFile = new File(SRC_GEN + File.separator + name + ".java");
-    //File javaFile = new File(dir.getPath() + File.separator + name + ".java");
+		//File javaFile = new File(SRC_GEN + File.separator + name + ".java");
+    File javaFile = new File(dir.getPath() + File.separator + name + ".java");
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
 		File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
 		File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
@@ -100,14 +100,13 @@ public class MainClass {
 
 		// write java
 		try {
-			jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
-			jGenerator.compileAndWrite(model.getMain(),
+		  jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
+		  jGenerator.compileAndWrite(model.getMain(),
 					javaFileCompilazione.getCanonicalPath(),
 					userOptions);
 			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
-
 			jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
-			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
+		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,7 +136,7 @@ public class MainClass {
 	 */
   private static void exportFile(File javaInputFile, String outputFolder){
 		File javaOutFile =
-				new File(outputFolder + File.separator + javaInputFile.getName() + ".java");
+				new File(outputFolder + File.separator + javaInputFile.getName());
 		File dir = javaOutFile.getParentFile();
 		assert dir.exists() && dir.isDirectory();
 		try (
