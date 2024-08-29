@@ -26,7 +26,7 @@ public class CompilatoreJava {
 
 		String messaggio = "non compilato";
 
-		File sourceFile = new File("examples/compilazione/" + name);
+		File sourceFile = new File(directory + File.separator + "compilazione" + File.separator + name);
 		
 		if (compileOnly) {
 			JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
