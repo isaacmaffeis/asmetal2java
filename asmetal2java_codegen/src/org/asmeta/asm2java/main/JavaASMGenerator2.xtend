@@ -191,32 +191,36 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 	
 	def coverBranches(Asm asm, StringBuffer sb) {
 		for (fd : asm.headerSection.signature.function){
-			sb.append("\t").append('''private void cover_«fd.name»(){''');	
-			if(fd.codomain instanceof EnumTd){
-				sb.append(System.lineSeparator)
-				sb.append("\t\t").append('''switch(this.get_«fd.name»()){''');
-				var codomainContents = fd.codomain.eContents;				
-				for(enumerativeLog: codomainContents){
-					val startIndex = enumerativeLog.toString().indexOf("symbol: ") + "symbol: ".length
-					val endIndex = enumerativeLog.toString().indexOf(")", startIndex)
-					val symbol = enumerativeLog.toString().substring(startIndex, endIndex)
+			if(fd instanceof MonitoredFunction || fd instanceof ControlledFunction){
+				sb.append("\t").append('''private void cover_«fd.name»(){''');	
+				if(fd.codomain instanceof EnumTd){
 					sb.append(System.lineSeparator)
-					sb.append("\t\t\t").append('''case «symbol» :
-					System.out.println("«fd.codomain.name» «symbol» covered");
-					// «fd.codomain.name» «symbol» covered
-					break;''');
+					sb.append("\t\t").append('''switch(this.get_«fd.name»()){''');
+					var codomainContents = fd.codomain.eContents;				
+					for(enumerativeLog: codomainContents){
+						val startIndex = enumerativeLog.toString().indexOf("symbol: ") + "symbol: ".length
+						val endIndex = enumerativeLog.toString().indexOf(")", startIndex)
+						val symbol = enumerativeLog.toString().substring(startIndex, endIndex)
+						sb.append(System.lineSeparator)
+						sb.append("\t\t\t").append('''case «symbol» :
+						System.out.println("«fd.codomain.name» «symbol» covered");
+						// «fd.codomain.name» «symbol» covered
+						break;''');
+					}
+					sb.append(System.lineSeparator)
+					sb.append("\t\t\t")sb.append('''}''');
+				}
+				else{
+					sb.append(System.lineSeparator)
+					sb.append("\t\t").append('''this.get_«fd.name»();''');
+					sb.append(System.lineSeparator)
+					sb.append("\t\t").append('''// No covered''');
 				}
 				sb.append(System.lineSeparator)
-				sb.append("\t\t\t")sb.append('''}''');
-			}
-			else{
+				sb.append("\t").append('''}''');
 				sb.append(System.lineSeparator)
-				sb.append("\t\t").append('''// No covered''');
+				sb.append(System.lineSeparator)
 			}
-			sb.append(System.lineSeparator)
-			sb.append("\t").append('''}''');
-			sb.append(System.lineSeparator)
-			sb.append(System.lineSeparator)
 		}
 	}
 	

@@ -330,7 +330,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
   public void coverBranches(final Asm asm, final StringBuffer sb) {
     EList<Function> _function = asm.getHeaderSection().getSignature().getFunction();
     for (final Function fd : _function) {
-      {
+      if (((fd instanceof MonitoredFunction) || (fd instanceof ControlledFunction))) {
         StringBuffer _append = sb.append("\t");
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("private void cover_");
@@ -363,23 +363,23 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
               _builder_2.append(symbol);
               _builder_2.append(" :");
               _builder_2.newLineIfNotEmpty();
-              _builder_2.append("\t\t\t\t\t");
+              _builder_2.append("\t\t\t\t\t\t");
               _builder_2.append("System.out.println(\"");
               String _name_2 = fd.getCodomain().getName();
-              _builder_2.append(_name_2, "\t\t\t\t\t");
+              _builder_2.append(_name_2, "\t\t\t\t\t\t");
               _builder_2.append(" ");
-              _builder_2.append(symbol, "\t\t\t\t\t");
+              _builder_2.append(symbol, "\t\t\t\t\t\t");
               _builder_2.append(" covered\");");
               _builder_2.newLineIfNotEmpty();
-              _builder_2.append("\t\t\t\t\t");
+              _builder_2.append("\t\t\t\t\t\t");
               _builder_2.append("// ");
               String _name_3 = fd.getCodomain().getName();
-              _builder_2.append(_name_3, "\t\t\t\t\t");
+              _builder_2.append(_name_3, "\t\t\t\t\t\t");
               _builder_2.append(" ");
-              _builder_2.append(symbol, "\t\t\t\t\t");
+              _builder_2.append(symbol, "\t\t\t\t\t\t");
               _builder_2.append(" covered");
               _builder_2.newLineIfNotEmpty();
-              _builder_2.append("\t\t\t\t\t");
+              _builder_2.append("\t\t\t\t\t\t");
               _builder_2.append("break;");
               _append_2.append(_builder_2);
             }
@@ -393,14 +393,22 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
           sb.append(System.lineSeparator());
           StringBuffer _append_2 = sb.append("\t\t");
           StringConcatenation _builder_3 = new StringConcatenation();
-          _builder_3.append("// No covered");
+          _builder_3.append("this.get_");
+          String _name_2 = fd.getName();
+          _builder_3.append(_name_2);
+          _builder_3.append("();");
           _append_2.append(_builder_3);
+          sb.append(System.lineSeparator());
+          StringBuffer _append_3 = sb.append("\t\t");
+          StringConcatenation _builder_4 = new StringConcatenation();
+          _builder_4.append("// No covered");
+          _append_3.append(_builder_4);
         }
         sb.append(System.lineSeparator());
-        StringBuffer _append_3 = sb.append("\t");
-        StringConcatenation _builder_4 = new StringConcatenation();
-        _builder_4.append("}");
-        _append_3.append(_builder_4);
+        StringBuffer _append_4 = sb.append("\t");
+        StringConcatenation _builder_5 = new StringConcatenation();
+        _builder_5.append("}");
+        _append_4.append(_builder_5);
         sb.append(System.lineSeparator());
         sb.append(System.lineSeparator());
       }
