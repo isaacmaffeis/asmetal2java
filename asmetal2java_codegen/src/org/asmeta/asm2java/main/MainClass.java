@@ -42,6 +42,8 @@ public class MainClass {
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
 	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
+	static private JavaASMGenerator2 jGeneratorASM = new JavaASMGenerator2();
+
 
 	// default translator options
 	private static TranslatorOptions translatorOptions =
@@ -85,14 +87,21 @@ public class MainClass {
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
 		File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
 		File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
+		File javaFileASM = new File(dirEsecuzione + File.separator + name + "_ASM.java");
+		File javaFileASMN = new File(dirEsecuzione + File.separator + name + ".java");
 
 		File javaFileT = new File(dirTraduzione + File.separator + name + ".java");
 		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
+		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
+
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
 		deleteExisting(javaFileExe);
 		deleteExisting(javaFileExeN);
+		deleteExisting(javaFileASM);
+		deleteExisting(javaFileASMN);
+		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
 		deleteExisting(javaFileExeT);
 
@@ -108,6 +117,11 @@ public class MainClass {
 			jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
 		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
+			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASM.getCanonicalPath(), userOptions);
+			jGenerator.compileAndWrite(model.getMain(), javaFileASMN.getCanonicalPath(), userOptions);
+			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new CompileResult(false, e.getMessage());
@@ -116,12 +130,16 @@ public class MainClass {
 		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
+		System.out.println("Generated java file: " + javaFileASMN.getCanonicalPath());
+
 		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
 		System.out.println("All java files Generated in: " + javaFileT.getCanonicalPath());
 
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileExe, outputFolder);
+		exportFile(javaFileASM, outputFolder);
+
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
 
