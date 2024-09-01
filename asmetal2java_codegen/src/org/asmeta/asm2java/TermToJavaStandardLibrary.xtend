@@ -102,11 +102,12 @@ class TermToJavaStandardLibrary extends TermToJava {
 	override dispatch String caseFunctionTermSupp(MonitoredFunction fd, FunctionTerm ft) {
 		var StringBuffer functionTerm = new StringBuffer
 		if (ft.arguments === null)
-			if (leftHandSide)
+			if (leftHandSide){
 				functionTerm.append(".set(")
-			else {
+			} else if(fd.codomain instanceof ConcreteDomain){
+					functionTerm.append(".get().value")
+			} else{
 				functionTerm.append(".get()")
-
 			}
 
 		if (ft.arguments !== null) {
