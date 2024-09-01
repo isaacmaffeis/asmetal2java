@@ -156,11 +156,13 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
         Domain _domain = ((MonitoredFunction)fd).getDomain();
         boolean _tripleEquals = (_domain == null);
         if (_tripleEquals) {
+          sb.append(System.lineSeparator());
+          StringBuffer _append = sb.append("\t\t\t\t\t");
           StringConcatenation _builder_2 = new StringConcatenation();
           String _name = ((MonitoredFunction)fd).getName();
           _builder_2.append(_name);
           _builder_2.append(",");
-          sb.append(_builder_2);
+          _append.append(_builder_2);
         } else {
         }
       }
@@ -217,39 +219,39 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
     sb.append(_builder_3);
     this.monitoredGetter(asm, sb);
     sb.append(System.lineSeparator());
-    StringBuffer _append = sb.append("\t\t");
+    StringBuffer _append_1 = sb.append("\t\t");
     StringConcatenation _builder_4 = new StringConcatenation();
     _builder_4.append("// Controlled getters");
-    _append.append(_builder_4);
+    _append_1.append(_builder_4);
     sb.append(System.lineSeparator());
     this.controllerGetter(asm, sb);
     sb.append(System.lineSeparator());
-    StringBuffer _append_1 = sb.append("\t");
+    StringBuffer _append_2 = sb.append("\t");
     StringConcatenation _builder_5 = new StringConcatenation();
     _builder_5.append("// Cover functions");
-    _append_1.append(_builder_5);
+    _append_2.append(_builder_5);
     sb.append(System.lineSeparator());
-    sb.append(System.lineSeparator());
-    StringBuffer _append_2 = sb.append("\t");
-    StringConcatenation _builder_6 = new StringConcatenation();
-    _builder_6.append("private void coverMonitored(){");
-    _append_2.append(_builder_6);
-    this.coverFunctions(asm, sb, true);
     sb.append(System.lineSeparator());
     StringBuffer _append_3 = sb.append("\t");
+    StringConcatenation _builder_6 = new StringConcatenation();
+    _builder_6.append("private void coverMonitored(){");
+    _append_3.append(_builder_6);
+    this.coverFunctions(asm, sb, true);
+    sb.append(System.lineSeparator());
+    StringBuffer _append_4 = sb.append("\t");
     StringConcatenation _builder_7 = new StringConcatenation();
     _builder_7.append("}");
     _builder_7.newLine();
     _builder_7.newLine();
     _builder_7.append("\t");
     _builder_7.append("private void coverControlled(){");
-    _append_3.append(_builder_7);
+    _append_4.append(_builder_7);
     this.coverFunctions(asm, sb, false);
     sb.append(System.lineSeparator());
-    StringBuffer _append_4 = sb.append("\t");
+    StringBuffer _append_5 = sb.append("\t");
     StringConcatenation _builder_8 = new StringConcatenation();
     _builder_8.append("}");
-    _append_4.append(_builder_8);
+    _append_5.append(_builder_8);
     sb.append(System.lineSeparator());
     sb.append(System.lineSeparator());
     this.coverBranches(asm, sb);
@@ -364,7 +366,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
               _builder_2.append(" :");
               _builder_2.newLineIfNotEmpty();
               _builder_2.append("\t\t\t\t\t\t");
-              _builder_2.append("System.out.println(\"");
+              _builder_2.append("System.out.println(\"Branch ");
               String _name_2 = fd.getCodomain().getName();
               _builder_2.append(_name_2, "\t\t\t\t\t\t");
               _builder_2.append(" ");
@@ -372,7 +374,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
               _builder_2.append(" covered\");");
               _builder_2.newLineIfNotEmpty();
               _builder_2.append("\t\t\t\t\t\t");
-              _builder_2.append("// ");
+              _builder_2.append("// Branch ");
               String _name_3 = fd.getCodomain().getName();
               _builder_2.append(_name_3, "\t\t\t\t\t\t");
               _builder_2.append(" ");
@@ -401,7 +403,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
           sb.append(System.lineSeparator());
           StringBuffer _append_3 = sb.append("\t\t");
           StringConcatenation _builder_4 = new StringConcatenation();
-          _builder_4.append("// No covered");
+          _builder_4.append("//1 Branch covered");
           _append_3.append(_builder_4);
         }
         sb.append(System.lineSeparator());

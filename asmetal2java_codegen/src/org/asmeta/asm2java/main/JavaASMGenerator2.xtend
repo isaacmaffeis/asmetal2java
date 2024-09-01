@@ -86,7 +86,8 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 			for (fd : asm.headerSection.signature.function) {
 				if (fd instanceof MonitoredFunction) {
 					if (fd.domain === null) {
-						sb.append('''«fd.name»,''')
+						sb.append(System.lineSeparator)
+						sb.append("\t\t\t\t\t").append('''«fd.name»,''')
 					}
 					else {
 						/* TODO: fix the index i
@@ -203,8 +204,8 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 						val symbol = enumerativeLog.toString().substring(startIndex, endIndex)
 						sb.append(System.lineSeparator)
 						sb.append("\t\t\t").append('''case «symbol» :
-						System.out.println("«fd.codomain.name» «symbol» covered");
-						// «fd.codomain.name» «symbol» covered
+						System.out.println("Branch «fd.codomain.name» «symbol» covered");
+						// Branch «fd.codomain.name» «symbol» covered
 						break;''');
 					}
 					sb.append(System.lineSeparator)
@@ -214,7 +215,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 					sb.append(System.lineSeparator)
 					sb.append("\t\t").append('''this.get_«fd.name»();''');
 					sb.append(System.lineSeparator)
-					sb.append("\t\t").append('''// No covered''');
+					sb.append("\t\t").append('''//1 Branch covered''');
 				}
 				sb.append(System.lineSeparator)
 				sb.append("\t").append('''}''');
