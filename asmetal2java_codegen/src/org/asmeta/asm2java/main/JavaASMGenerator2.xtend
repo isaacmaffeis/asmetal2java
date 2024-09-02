@@ -13,6 +13,7 @@ import asmeta.definitions.domains.MapDomain
 import asmeta.definitions.domains.SequenceDomain
 import asmeta.definitions.domains.EnumTd
 import asmeta.definitions.MonitoredFunction
+import org.asmeta.asm2java.ToString
 
 class JavaASMGenerator2 extends AsmToJavaGenerator {
 
@@ -141,7 +142,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 			sb.append("\t\t").append('''// Controlled getters''');
 			sb.append(System.lineSeparator)
 			
-			controllerGetter(asm,sb);
+			controlledGetter(asm,sb);
 			
 			sb.append(System.lineSeparator)
 			sb.append("\t").append('''// Cover functions''');
@@ -211,34 +212,74 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 	def coverBranches(Asm asm, StringBuffer sb) {
 		for (fd : asm.headerSection.signature.function){
 			if(fd instanceof MonitoredFunction || fd instanceof ControlledFunction){
-				sb.append("\t").append('''private void cover_«fd.name»(){''');	
-				if(fd.codomain instanceof EnumTd){
-					sb.append(System.lineSeparator)
-					sb.append("\t\t").append('''switch(this.get_«fd.name»()){''');
-					var codomainContents = fd.codomain.eContents;				
-					for(enumerativeLog: codomainContents){
-						val startIndex = enumerativeLog.toString().indexOf("symbol: ") + "symbol: ".length
-						val endIndex = enumerativeLog.toString().indexOf(")", startIndex)
-						val symbol = enumerativeLog.toString().substring(startIndex, endIndex)
+				if(fd.domain === null){
+					sb.append("\t").append('''private void cover_«fd.name»(){''');	
+					if(fd.codomain instanceof EnumTd){
 						sb.append(System.lineSeparator)
-						sb.append("\t\t\t").append('''case «symbol» :
-						System.out.println("Branch «fd.codomain.name» «symbol» covered");
-						// Branch «fd.codomain.name» «symbol» covered
-						break;''');
+						sb.append("\t\t").append('''switch(this.get_«fd.name»()){''');
+						/* metodo più rapido ma meno consistente
+						var codomainContents = fd.codomain.eContents;				
+						for(enumerativeLog: codomainContents){
+							val startIndex = enumerativeLog.toString().indexOf("symbol: ") + "symbol: ".length
+							val endIndex = enumerativeLog.toString().indexOf(")", startIndex)
+							val symbol = enumerativeLog.toString().substring(startIndex, endIndex)
+							sb.append(System.lineSeparator)
+							sb.append("\t\t\t").append('''case «symbol» :
+							System.out.println("Branch «fd.codomain.name» «symbol» covered");
+							// Branch «fd.codomain.name» «symbol» covered
+							break;''');
+						}
+						*/
+						/*Metodo normale */
+						for(dd : asm.headerSection.signature.domain){
+							if(dd.equals(fd.codomain)){
+								if(dd instanceof EnumTd){
+									for (var int i = 0; i < dd.element.size; i++) {
+										var symbol = new ToString(asm).visit(dd.element.get(i))
+										sb.append(System.lineSeparator)
+							sb.append("\t\t\t").append('''case «symbol» :
+							System.out.println("Branch «fd.codomain.name» «symbol» covered");
+							// Branch «fd.codomain.name» «symbol» covered
+							break;''');	
+									}
+								}
+							}
+						}
+						/* */
+						sb.append(System.lineSeparator)
+						sb.append("\t\t\t")sb.append('''}''');
+					}
+					else{
+						sb.append(System.lineSeparator)
+						sb.append("\t\t").append('''this.get_«fd.name»();''');
+						sb.append(System.lineSeparator)
+						sb.append("\t\t").append('''//1 Branch covered''');
 					}
 					sb.append(System.lineSeparator)
-					sb.append("\t\t\t")sb.append('''}''');
-				}
-				else{
+					sb.append("\t").append('''}''');
 					sb.append(System.lineSeparator)
-					sb.append("\t\t").append('''this.get_«fd.name»();''');
 					sb.append(System.lineSeparator)
-					sb.append("\t\t").append('''//1 Branch covered''');
 				}
-				sb.append(System.lineSeparator)
-				sb.append("\t").append('''}''');
-				sb.append(System.lineSeparator)
-				sb.append(System.lineSeparator)
+				else{ // fd.domain != null
+					for(dd : asm.headerSection.signature.domain){
+						if(dd.equals(fd.domain)){
+							if(dd instanceof EnumTd){
+								sb.append("\t").append('''private void cover_«fd.name»(){''');
+								for (var int i = 0; i < dd.element.size; i++) {
+									var symbol = new ToString(asm).visit(dd.element.get(i))
+									sb.append(System.lineSeparator)
+									sb.append("\t\t").append('''this.get_«fd.name»_«symbol»();''');
+								}
+								sb.append(System.lineSeparator)
+								sb.append("\t\t").append('''// «dd.element.size» Branch covered''');
+								sb.append(System.lineSeparator)
+								sb.append("\t").append('''}''');
+								sb.append(System.lineSeparator)
+								sb.append(System.lineSeparator)
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -287,7 +328,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 		}
 	}
 	
-	def controllerGetter(Asm asm, StringBuffer sb) {
+	def controlledGetter(Asm asm, StringBuffer sb) {
 		var asmName = asm.name;
 		for (fd : asm.headerSection.signature.function) {
 			if (fd instanceof ControlledFunction) {
@@ -325,6 +366,38 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 									return this.esecuzione.«fd.name».get();
 								}
 						 	''');
+					}
+				}
+				else{ // TODO: Da sistemare i getter per le funzioni con Dominio -> Codominio
+				
+					for(dd : asm.headerSection.signature.domain){
+						if(dd.equals(fd.domain)){
+							if(dd instanceof EnumTd){
+								for (var int i = 0; i < dd.element.size; i++) {
+									var symbol = new ToString(asm).visit(dd.element.get(i))
+									sb.append(System.lineSeparator)
+									if(fd.codomain instanceof ConcreteDomain){ // considero subsetOf Integer
+										sb.append("\t").append('''public int get_«fd.name»_«symbol»(){''');
+										sb.append(System.lineSeparator)
+										sb.append("\t\t").append('''return this.esecuzione.«fd.name».oldValues.get(''');
+										sb.append(System.lineSeparator)
+										sb.append("\t\t\t").append('''this.esecuzione.«fd.domain.name»_elemsList.get(«i»)).value;''');
+										sb.append(System.lineSeparator)
+										sb.append("\t").append('''}''');
+									}
+									else{
+										sb.append("\t").append('''public «asmName».«fd.codomain.name» get_«fd.name»_«symbol»(){''');	
+										sb.append(System.lineSeparator)
+										sb.append("\t\t").append('''return this.esecuzione.«fd.name».oldValues.get(''');
+										sb.append(System.lineSeparator)
+										sb.append("\t\t\t").append('''this.esecuzione.«fd.domain.name»_elemsList.get(«i»));''');
+										sb.append(System.lineSeparator)
+										sb.append("\t").append('''}''');
+									}
+									sb.append(System.lineSeparator)		
+								}
+							}
+						}
 					}
 				}
 			}
