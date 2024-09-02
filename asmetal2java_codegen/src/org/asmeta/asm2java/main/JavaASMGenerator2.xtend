@@ -27,6 +27,12 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 
 	String supp
 
+	String [] finalStateConditions;
+	
+	def setFinalStateConditions(String [] finalStateConditions){
+		this.finalStateConditions = finalStateConditions;
+	}
+
 	override compileAsm(Asm asm) {
 		// collect alla the seq rules if required
 		if (options.optimizeSeqMacroRule) {
@@ -109,13 +115,25 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 				/* monitored */
 				coverMonitored();
 				/* controlled */
-				coverControlled();
+				coverControlled();''');
 				
-				stato++;
-		}
-			
-		// Monitored getters
-			''');
+			sb.append(System.lineSeparator)
+			if(finalStateConditions !== null || !finalStateConditions.isEmpty){
+				sb.append("\t\t\t\t" ).append('''/*final state condition */''')
+				sb.append(System.lineSeparator)
+				sb.append("\t\t\t\t" ).append('''if(isFinalState()){
+						System.out.println("\n<Stato finale>");
+				}
+				else''')
+				sb.append(System.lineSeparator)	
+			}
+			sb.append("\t\t\t\t\t\t" ).append('''stato++;
+				}''')
+		
+			setIsFinalState(asm, sb)
+			sb.append(System.lineSeparator)	
+		
+			sb.append("\t" ).append('''// Monitored getters''');
 			
 			monitoredGetter(asm, sb);
 			
@@ -464,8 +482,10 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 
 					if (fd.codomain instanceof ConcreteDomain) {
 						sb.append('''
-						this.esecuzione.«fd.name»_supporto.value = «fd.name»;
-						this.esecuzione.«fd.name».set(this.esecuzione.«fd.name»_supporto);
+						this.esecuzione.«fd.name».set(
+							«asm.name».«fd.codomain.name».valueOf(
+							this.esecuzione.«fd.codomain.name»_elems.get(
+							«fd.name» - this.esecuzione.«fd.codomain.name»_elems.get(0))));
 						System.out.println("Set «fd.name» = " + «fd.name»);''')
 						sb.append(System.lineSeparator)
 						sb.append(System.lineSeparator)
@@ -511,4 +531,36 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 		return sb.toString
 	}
 
+	def setIsFinalState(Asm asm, StringBuffer sb){
+		if(finalStateConditions !== null || !finalStateConditions.isEmpty){
+			sb.append(System.lineSeparator)
+			sb.append("\t").append('''// final state condition''')
+			sb.append(System.lineSeparator)
+			sb.append("\t").append('''public boolean isFinalState(){''')
+			sb.append(System.lineSeparator)
+			sb.append("\t\t").append('''return''')
+			for(condition : finalStateConditions){
+				
+				val cond_name = condition.replaceAll("^\\s*(\\w+)\\s*.*$", "$1")
+				val cond_value = condition.replaceAll("^\\s*\\w+\\s*(.*)$", "$1")
+				
+				if(cond_name.toLowerCase.equals("stato")){
+					sb.append(System.lineSeparator)
+					sb.append("\t\t\t").append('''this.stato «cond_value» &&''')
+				}
+				else{
+					for(fd : asm.headerSection.signature.function)
+						if(fd instanceof ControlledFunction && fd.name.equals(cond_name)){
+							sb.append(System.lineSeparator)
+							sb.append("\t\t\t").append('''this.get_«fd.name»() «cond_value» &&''')
+						}
+					}
+			}
+			sb.setLength(sb.length() - 3)
+			sb.append(''';''')
+			sb.append(System.lineSeparator)
+			sb.append("\t").append('''}''')
+		}
+	}
+	
 }

@@ -7,8 +7,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -61,7 +63,8 @@ public class MainClass {
 	public static CompileResult generate(
       String asmspec,
 			TranslatorOptions userOptions,
-			String outputFolder)
+			String outputFolder,
+			String[] finalStateConditions)
 			throws Exception {
 		//
 		// PARSE THE SPECIFICATION
@@ -80,7 +83,6 @@ public class MainClass {
 		String dirEsecuzione = asmFile.getParentFile().getPath() + "/esecuzione";
 		String dirTraduzione = asmFile.getParentFile().getPath() + "/Traduzione";
 
-
 		// AC
 		//File javaFile = new File(SRC_GEN + File.separator + name + ".java");
     File javaFile = new File(dir.getPath() + File.separator + name + ".java");
@@ -93,7 +95,6 @@ public class MainClass {
 		File javaFileT = new File(dirTraduzione + File.separator + name + ".java");
 		//File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
 		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
-
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
@@ -109,18 +110,22 @@ public class MainClass {
 
 		// write java
 		try {
+			// Java Class
 		  jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
 		  jGenerator.compileAndWrite(model.getMain(),
 					javaFileCompilazione.getCanonicalPath(),
 					userOptions);
+
+			// EXE Class
 			//jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
 			//jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
 		  //jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
+			// ASM Class
+			jGeneratorASM.setFinalStateConditions(finalStateConditions);
 			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASM.getCanonicalPath(), userOptions);
 			jGenerator.compileAndWrite(model.getMain(), javaFileASMN.getCanonicalPath(), userOptions);
 			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
-
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -216,6 +221,19 @@ public class MainClass {
 				.hasArg(true)
 				.desc("The output folder (optional, defaults to `./output/`)")
 				.build();
+
+		// final state condition (Only for ASM scenario generator)
+		Option finalState = Option.builder("finalState")
+				.argName("finalState")
+				.type(String.class)
+				.hasArg(true)
+				.desc("Final state condition:\n"
+						+ "(for ASM scenario generation only)\n"
+						+ "Allows you to specify the final state condition,\n"
+						+ " in order to help automatic scenario generation.\n"
+						+ "Add the conditions separated by ':'\n"
+						+ "example: state>=5:total>=50")
+				.build();
 		
 		// property
 		Option property = Option.builder("D")
@@ -235,6 +253,7 @@ public class MainClass {
 		options.addOption(help);
 		options.addOption(input);
 		options.addOption(output);
+		options.addOption(finalState);
 		options.addOption(property);
 
 		return options;
@@ -310,9 +329,18 @@ public class MainClass {
 		} else {
 			outputFolder = line.getOptionValue("output");
 		}
+
+		String[] finalStateConditions = null;
+		if(line.hasOption("finalState")){
+			finalStateConditions = line.getOptionValue("finalState").split(":");
+		}
 		
 		try {
-			CompileResult compileResult = generate(asmspec, translatorOptions, outputFolder);
+			CompileResult compileResult = generate(
+					asmspec,
+					translatorOptions,
+					outputFolder,
+					finalStateConditions);
 			if(compileResult.getSuccess()){
 				logger.info("Generation succeed : " + compileResult.toString());
 			}

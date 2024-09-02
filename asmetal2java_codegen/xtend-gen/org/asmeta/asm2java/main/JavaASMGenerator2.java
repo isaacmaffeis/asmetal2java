@@ -18,6 +18,7 @@ import org.asmeta.asm2java.SeqRuleCollector;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
+import org.eclipse.xtext.xbase.lib.Conversions;
 import org.junit.Assert;
 
 @SuppressWarnings("all")
@@ -30,6 +31,12 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
   private List<Rule> seqCalledRules;
 
   private String supp;
+
+  private String[] finalStateConditions;
+
+  public String[] setFinalStateConditions(final String[] finalStateConditions) {
+    return this.finalStateConditions = finalStateConditions;
+  }
 
   @Override
   public String compileAsm(final Asm asm) {
@@ -202,101 +209,122 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
     _builder_3.newLine();
     _builder_3.append("\t\t\t\t");
     _builder_3.append("coverControlled();");
-    _builder_3.newLine();
-    _builder_3.append("\t\t\t\t");
-    _builder_3.newLine();
-    _builder_3.append("\t\t\t\t");
-    _builder_3.append("stato++;");
-    _builder_3.newLine();
-    _builder_3.append("\t\t");
-    _builder_3.append("}");
-    _builder_3.newLine();
-    _builder_3.append("\t\t\t");
-    _builder_3.newLine();
-    _builder_3.append("\t\t");
-    _builder_3.append("// Monitored getters");
-    _builder_3.newLine();
     sb.append(_builder_3);
-    this.monitoredGetter(asm, sb);
     sb.append(System.lineSeparator());
-    StringBuffer _append_1 = sb.append("\t\t");
-    StringConcatenation _builder_4 = new StringConcatenation();
-    _builder_4.append("// Controlled getters");
-    _append_1.append(_builder_4);
-    sb.append(System.lineSeparator());
-    this.controllerGetter(asm, sb);
-    sb.append(System.lineSeparator());
-    StringBuffer _append_2 = sb.append("\t");
-    StringConcatenation _builder_5 = new StringConcatenation();
-    _builder_5.append("// Cover functions");
-    _append_2.append(_builder_5);
-    sb.append(System.lineSeparator());
-    sb.append(System.lineSeparator());
-    StringBuffer _append_3 = sb.append("\t");
+    if (((this.finalStateConditions != null) || (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
+      StringBuffer _append_1 = sb.append("\t\t\t\t");
+      StringConcatenation _builder_4 = new StringConcatenation();
+      _builder_4.append("/*final state condition */");
+      _append_1.append(_builder_4);
+      sb.append(System.lineSeparator());
+      StringBuffer _append_2 = sb.append("\t\t\t\t");
+      StringConcatenation _builder_5 = new StringConcatenation();
+      _builder_5.append("if(isFinalState()){");
+      _builder_5.newLine();
+      _builder_5.append("\t\t\t\t\t\t");
+      _builder_5.append("System.out.println(\"\\n<Stato finale>\");");
+      _builder_5.newLine();
+      _builder_5.append("\t\t\t\t");
+      _builder_5.append("}");
+      _builder_5.newLine();
+      _builder_5.append("\t\t\t\t");
+      _builder_5.append("else");
+      _append_2.append(_builder_5);
+      sb.append(System.lineSeparator());
+    }
+    StringBuffer _append_3 = sb.append("\t\t\t\t\t\t");
     StringConcatenation _builder_6 = new StringConcatenation();
-    _builder_6.append("private void coverMonitored(){");
+    _builder_6.append("stato++;");
+    _builder_6.newLine();
+    _builder_6.append("\t\t\t\t");
+    _builder_6.append("}");
     _append_3.append(_builder_6);
-    this.coverFunctions(asm, sb, true);
+    this.setIsFinalState(asm, sb);
     sb.append(System.lineSeparator());
     StringBuffer _append_4 = sb.append("\t");
     StringConcatenation _builder_7 = new StringConcatenation();
-    _builder_7.append("}");
-    _builder_7.newLine();
-    _builder_7.newLine();
-    _builder_7.append("\t");
-    _builder_7.append("private void coverControlled(){");
+    _builder_7.append("// Monitored getters");
     _append_4.append(_builder_7);
+    this.monitoredGetter(asm, sb);
+    sb.append(System.lineSeparator());
+    StringBuffer _append_5 = sb.append("\t\t");
+    StringConcatenation _builder_8 = new StringConcatenation();
+    _builder_8.append("// Controlled getters");
+    _append_5.append(_builder_8);
+    sb.append(System.lineSeparator());
+    this.controllerGetter(asm, sb);
+    sb.append(System.lineSeparator());
+    StringBuffer _append_6 = sb.append("\t");
+    StringConcatenation _builder_9 = new StringConcatenation();
+    _builder_9.append("// Cover functions");
+    _append_6.append(_builder_9);
+    sb.append(System.lineSeparator());
+    sb.append(System.lineSeparator());
+    StringBuffer _append_7 = sb.append("\t");
+    StringConcatenation _builder_10 = new StringConcatenation();
+    _builder_10.append("private void coverMonitored(){");
+    _append_7.append(_builder_10);
+    this.coverFunctions(asm, sb, true);
+    sb.append(System.lineSeparator());
+    StringBuffer _append_8 = sb.append("\t");
+    StringConcatenation _builder_11 = new StringConcatenation();
+    _builder_11.append("}");
+    _builder_11.newLine();
+    _builder_11.newLine();
+    _builder_11.append("\t");
+    _builder_11.append("private void coverControlled(){");
+    _append_8.append(_builder_11);
     this.coverFunctions(asm, sb, false);
     sb.append(System.lineSeparator());
-    StringBuffer _append_5 = sb.append("\t");
-    StringConcatenation _builder_8 = new StringConcatenation();
-    _builder_8.append("}");
-    _append_5.append(_builder_8);
+    StringBuffer _append_9 = sb.append("\t");
+    StringConcatenation _builder_12 = new StringConcatenation();
+    _builder_12.append("}");
+    _append_9.append(_builder_12);
     sb.append(System.lineSeparator());
     sb.append(System.lineSeparator());
     this.coverBranches(asm, sb);
-    StringConcatenation _builder_9 = new StringConcatenation();
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.append("// ASM Methods");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.append("private void printControlled() {");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.newLine();
-    _builder_9.append("\t\t");
+    StringConcatenation _builder_13 = new StringConcatenation();
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.append("// ASM Methods");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.append("private void printControlled() {");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.newLine();
+    _builder_13.append("\t\t");
     String _printControlled = this.printControlled(asm);
-    _builder_9.append(_printControlled, "\t\t");
-    _builder_9.newLineIfNotEmpty();
-    _builder_9.append("\t");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.append("}");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.newLine();
-    _builder_9.append("\t");
-    _builder_9.append("private void setMonitored(");
-    sb.append(_builder_9);
+    _builder_13.append(_printControlled, "\t\t");
+    _builder_13.newLineIfNotEmpty();
+    _builder_13.append("\t");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.append("}");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.newLine();
+    _builder_13.append("\t");
+    _builder_13.append("private void setMonitored(");
+    sb.append(_builder_13);
     this.setMonitoredArgs(asm, sb);
-    StringConcatenation _builder_10 = new StringConcatenation();
-    _builder_10.append(") {");
-    _builder_10.newLine();
-    _builder_10.append("\t\t\t\t\t");
-    _builder_10.newLine();
-    _builder_10.append("\t\t\t\t\t");
+    StringConcatenation _builder_14 = new StringConcatenation();
+    _builder_14.append(") {");
+    _builder_14.newLine();
+    _builder_14.append("\t\t\t\t\t");
+    _builder_14.newLine();
+    _builder_14.append("\t\t\t\t\t");
     String _setMonitored = this.setMonitored(asm);
-    _builder_10.append(_setMonitored, "\t\t\t\t\t");
-    _builder_10.newLineIfNotEmpty();
-    _builder_10.append("\t\t\t\t");
-    _builder_10.append("}");
-    _builder_10.newLine();
-    _builder_10.append("\t\t\t");
-    _builder_10.append("}");
-    sb.append(_builder_10);
+    _builder_14.append(_setMonitored, "\t\t\t\t\t");
+    _builder_14.newLineIfNotEmpty();
+    _builder_14.append("\t\t\t\t");
+    _builder_14.append("}");
+    _builder_14.newLine();
+    _builder_14.append("\t\t\t");
+    _builder_14.append("}");
+    sb.append(_builder_14);
     return sb.toString();
   }
 
@@ -946,25 +974,36 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
             _builder_3.append("this.esecuzione.");
             String _name_12 = ((MonitoredFunction)fd).getName();
             _builder_3.append(_name_12);
-            _builder_3.append("_supporto.value = ");
-            String _name_13 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_13);
-            _builder_3.append(";");
+            _builder_3.append(".set(");
             _builder_3.newLineIfNotEmpty();
+            _builder_3.append("\t");
+            String _name_13 = asm.getName();
+            _builder_3.append(_name_13, "\t");
+            _builder_3.append(".");
+            String _name_14 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_3.append(_name_14, "\t");
+            _builder_3.append(".valueOf(");
+            _builder_3.newLineIfNotEmpty();
+            _builder_3.append("\t");
             _builder_3.append("this.esecuzione.");
-            String _name_14 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_14);
-            _builder_3.append(".set(this.esecuzione.");
-            String _name_15 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_15);
-            _builder_3.append("_supporto);");
+            String _name_15 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_3.append(_name_15, "\t");
+            _builder_3.append("_elems.get(");
+            _builder_3.newLineIfNotEmpty();
+            _builder_3.append("\t");
+            String _name_16 = ((MonitoredFunction)fd).getName();
+            _builder_3.append(_name_16, "\t");
+            _builder_3.append(" - this.esecuzione.");
+            String _name_17 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_3.append(_name_17, "\t");
+            _builder_3.append("_elems.get(0))));");
             _builder_3.newLineIfNotEmpty();
             _builder_3.append("System.out.println(\"Set ");
-            String _name_16 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_16);
+            String _name_18 = ((MonitoredFunction)fd).getName();
+            _builder_3.append(_name_18);
             _builder_3.append(" = \" + ");
-            String _name_17 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_17);
+            String _name_19 = ((MonitoredFunction)fd).getName();
+            _builder_3.append(_name_19);
             _builder_3.append(");");
             sb.append(_builder_3);
             sb.append(System.lineSeparator());
@@ -974,22 +1013,22 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
           if ((_codomain_2 instanceof AbstractTd)) {
             StringConcatenation _builder_4 = new StringConcatenation();
             _builder_4.append("this.esecuzione.");
-            String _name_18 = ((MonitoredFunction)fd).getName();
-            _builder_4.append(_name_18);
-            _builder_4.append(".set(this.esecuzione.");
-            String _name_19 = ((MonitoredFunction)fd).getCodomain().getName();
-            _builder_4.append(_name_19);
-            _builder_4.append("_Class.get(");
             String _name_20 = ((MonitoredFunction)fd).getName();
             _builder_4.append(_name_20);
+            _builder_4.append(".set(this.esecuzione.");
+            String _name_21 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_4.append(_name_21);
+            _builder_4.append("_Class.get(");
+            String _name_22 = ((MonitoredFunction)fd).getName();
+            _builder_4.append(_name_22);
             _builder_4.append("));");
             _builder_4.newLineIfNotEmpty();
             _builder_4.append("System.out.println(\"Set ");
-            String _name_21 = ((MonitoredFunction)fd).getName();
-            _builder_4.append(_name_21);
+            String _name_23 = ((MonitoredFunction)fd).getName();
+            _builder_4.append(_name_23);
             _builder_4.append(" = \" + ");
-            String _name_22 = ((MonitoredFunction)fd).getName();
-            _builder_4.append(_name_22);
+            String _name_24 = ((MonitoredFunction)fd).getName();
+            _builder_4.append(_name_24);
             _builder_4.append(");");
             sb.append(_builder_4);
             sb.append(System.lineSeparator());
@@ -1000,5 +1039,74 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
       }
     }
     return sb.toString();
+  }
+
+  public StringBuffer setIsFinalState(final Asm asm, final StringBuffer sb) {
+    StringBuffer _xifexpression = null;
+    if (((this.finalStateConditions != null) || (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
+      StringBuffer _xblockexpression = null;
+      {
+        sb.append(System.lineSeparator());
+        StringBuffer _append = sb.append("\t");
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("// final state condition");
+        _append.append(_builder);
+        sb.append(System.lineSeparator());
+        StringBuffer _append_1 = sb.append("\t");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.append("public boolean isFinalState(){");
+        _append_1.append(_builder_1);
+        sb.append(System.lineSeparator());
+        StringBuffer _append_2 = sb.append("\t\t");
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("return");
+        _append_2.append(_builder_2);
+        for (final String condition : this.finalStateConditions) {
+          {
+            final String cond_name = condition.replaceAll("^\\s*(\\w+)\\s*.*$", "$1");
+            final String cond_value = condition.replaceAll("^\\s*\\w+\\s*(.*)$", "$1");
+            boolean _equals = cond_name.toLowerCase().equals("stato");
+            if (_equals) {
+              sb.append(System.lineSeparator());
+              StringBuffer _append_3 = sb.append("\t\t\t");
+              StringConcatenation _builder_3 = new StringConcatenation();
+              _builder_3.append("this.stato ");
+              _builder_3.append(cond_value);
+              _builder_3.append(" &&");
+              _append_3.append(_builder_3);
+            } else {
+              EList<Function> _function = asm.getHeaderSection().getSignature().getFunction();
+              for (final Function fd : _function) {
+                if (((fd instanceof ControlledFunction) && fd.getName().equals(cond_name))) {
+                  sb.append(System.lineSeparator());
+                  StringBuffer _append_4 = sb.append("\t\t\t");
+                  StringConcatenation _builder_4 = new StringConcatenation();
+                  _builder_4.append("this.get_");
+                  String _name = fd.getName();
+                  _builder_4.append(_name);
+                  _builder_4.append("() ");
+                  _builder_4.append(cond_value);
+                  _builder_4.append(" &&");
+                  _append_4.append(_builder_4);
+                }
+              }
+            }
+          }
+        }
+        int _length = sb.length();
+        int _minus = (_length - 3);
+        sb.setLength(_minus);
+        StringConcatenation _builder_3 = new StringConcatenation();
+        _builder_3.append(";");
+        sb.append(_builder_3);
+        sb.append(System.lineSeparator());
+        StringBuffer _append_3 = sb.append("\t");
+        StringConcatenation _builder_4 = new StringConcatenation();
+        _builder_4.append("}");
+        _xblockexpression = _append_3.append(_builder_4);
+      }
+      _xifexpression = _xblockexpression;
+    }
+    return _xifexpression;
   }
 }
