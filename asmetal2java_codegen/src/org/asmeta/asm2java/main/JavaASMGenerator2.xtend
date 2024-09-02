@@ -118,8 +118,8 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 				coverControlled();''');
 				
 			sb.append(System.lineSeparator)
-			if(finalStateConditions !== null || !finalStateConditions.isEmpty){
-				sb.append("\t\t\t\t" ).append('''/*final state condition */''')
+			if(finalStateConditions !== null && !finalStateConditions.isEmpty){
+				sb.append("\t\t\t\t" ).append('''/* final state condition */''')
 				sb.append(System.lineSeparator)
 				sb.append("\t\t\t\t" ).append('''if(isFinalState()){
 						System.out.println("\n<Stato finale>");
@@ -532,7 +532,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 	}
 
 	def setIsFinalState(Asm asm, StringBuffer sb){
-		if(finalStateConditions !== null || !finalStateConditions.isEmpty){
+		if(finalStateConditions !== null && !finalStateConditions.isEmpty){
 			sb.append(System.lineSeparator)
 			sb.append("\t").append('''// final state condition''')
 			sb.append(System.lineSeparator)

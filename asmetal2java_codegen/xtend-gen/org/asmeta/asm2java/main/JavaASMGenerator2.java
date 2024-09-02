@@ -211,10 +211,10 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
     _builder_3.append("coverControlled();");
     sb.append(_builder_3);
     sb.append(System.lineSeparator());
-    if (((this.finalStateConditions != null) || (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
+    if (((this.finalStateConditions != null) && (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
       StringBuffer _append_1 = sb.append("\t\t\t\t");
       StringConcatenation _builder_4 = new StringConcatenation();
-      _builder_4.append("/*final state condition */");
+      _builder_4.append("/* final state condition */");
       _append_1.append(_builder_4);
       sb.append(System.lineSeparator());
       StringBuffer _append_2 = sb.append("\t\t\t\t");
@@ -1043,7 +1043,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
 
   public StringBuffer setIsFinalState(final Asm asm, final StringBuffer sb) {
     StringBuffer _xifexpression = null;
-    if (((this.finalStateConditions != null) || (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
+    if (((this.finalStateConditions != null) && (!((List<String>)Conversions.doWrapArray(this.finalStateConditions)).isEmpty()))) {
       StringBuffer _xblockexpression = null;
       {
         sb.append(System.lineSeparator());

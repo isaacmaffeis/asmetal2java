@@ -43,13 +43,13 @@ public class MainClass {
 
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
-	//static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
+	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
 	static private JavaASMGenerator2 jGeneratorASM = new JavaASMGenerator2();
 
 
 	// default translator options
 	private static TranslatorOptions translatorOptions =
-			new TranslatorOptions(false, true, true);
+			new TranslatorOptions(false, false, false);
 
 	/**
 	 * Generates Java code from an ASM specification.
@@ -87,24 +87,24 @@ public class MainClass {
 		//File javaFile = new File(SRC_GEN + File.separator + name + ".java");
     File javaFile = new File(dir.getPath() + File.separator + name + ".java");
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
-		//File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
-		//File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
+		File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
+		File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
 		File javaFileASM = new File(dirEsecuzione + File.separator + name + "_ASM.java");
 		File javaFileASMN = new File(dirEsecuzione + File.separator + name + ".java");
 
 		File javaFileT = new File(dirTraduzione + File.separator + name + ".java");
-		//File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
+		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
 		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
-		//deleteExisting(javaFileExe);
-		//deleteExisting(javaFileExeN);
+		deleteExisting(javaFileExe);
+		deleteExisting(javaFileExeN);
 		deleteExisting(javaFileASM);
 		deleteExisting(javaFileASMN);
 		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
-		//deleteExisting(javaFileExeT);
+		deleteExisting(javaFileExeT);
 
 		System.out.println("\n\n===" + name + " ===================");
 
@@ -117,9 +117,9 @@ public class MainClass {
 					userOptions);
 
 			// EXE Class
-			//jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
-			//jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
-		  //jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
+			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
+			jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
+		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
 			// ASM Class
 			jGeneratorASM.setFinalStateConditions(finalStateConditions);
@@ -134,15 +134,15 @@ public class MainClass {
 
 		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
-		//System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
+		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
 		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
 
-		//System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
+		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
 		System.out.println("All java files Generated in: " + javaFileT.getCanonicalPath());
 
 		exportFile(javaFile, outputFolder);
-		//exportFile(javaFileExe, outputFolder);
+		exportFile(javaFileExe, outputFolder);
 		exportFile(javaFileASM, outputFolder);
 
 
