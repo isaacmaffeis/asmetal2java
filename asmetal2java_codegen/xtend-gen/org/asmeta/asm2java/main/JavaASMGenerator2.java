@@ -155,7 +155,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
     _builder_1.append("printControlled();");
     _builder_1.newLine();
     _builder_1.append("\t\t\t\t");
-    _builder_1.append("setMonitored(");
+    _builder_1.append("setMonitored( ");
     sb.append(_builder_1);
     EList<Function> _function = asm.getHeaderSection().getSignature().getFunction();
     for (final Function fd : _function) {
@@ -307,7 +307,7 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
     _builder_13.append("\t");
     _builder_13.newLine();
     _builder_13.append("\t");
-    _builder_13.append("private void setMonitored(");
+    _builder_13.append("private void setMonitored( ");
     sb.append(_builder_13);
     this.setMonitoredArgs(asm, sb);
     StringConcatenation _builder_14 = new StringConcatenation();
@@ -1007,6 +1007,9 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
 
   public void setMonitoredArgs(final Asm asm, final StringBuffer sb) {
     final String asmName = asm.getName();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append(" ");
+    sb.append(_builder);
     EList<Function> _function = asm.getHeaderSection().getSignature().getFunction();
     for (final Function fd : _function) {
       if ((fd instanceof MonitoredFunction)) {
@@ -1015,55 +1018,55 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
         if (_tripleEquals) {
           if ((((MonitoredFunction)fd).getCodomain().getName().equals("Boolean") && (!(((MonitoredFunction)fd).getCodomain() instanceof ConcreteDomain)))) {
             sb.append(System.lineSeparator()).append("\t\t");
-            StringConcatenation _builder = new StringConcatenation();
-            _builder.append("boolean ");
+            StringConcatenation _builder_1 = new StringConcatenation();
+            _builder_1.append("boolean ");
             String _name = ((MonitoredFunction)fd).getName();
-            _builder.append(_name);
-            _builder.append(",");
-            sb.append(_builder);
+            _builder_1.append(_name);
+            _builder_1.append(",");
+            sb.append(_builder_1);
           } else {
             if ((((MonitoredFunction)fd).getCodomain().getName().equals("Integer") && (!(((MonitoredFunction)fd).getCodomain() instanceof ConcreteDomain)))) {
               sb.append(System.lineSeparator()).append("\t\t");
-              StringConcatenation _builder_1 = new StringConcatenation();
-              _builder_1.append("int ");
+              StringConcatenation _builder_2 = new StringConcatenation();
+              _builder_2.append("int ");
               String _name_1 = ((MonitoredFunction)fd).getName();
-              _builder_1.append(_name_1);
-              _builder_1.append(",");
-              sb.append(_builder_1);
+              _builder_2.append(_name_1);
+              _builder_2.append(",");
+              sb.append(_builder_2);
             } else {
               Domain _codomain = ((MonitoredFunction)fd).getCodomain();
               if ((_codomain instanceof EnumTd)) {
                 sb.append(System.lineSeparator()).append("\t\t");
-                StringConcatenation _builder_2 = new StringConcatenation();
-                _builder_2.append(asmName);
-                _builder_2.append(".");
+                StringConcatenation _builder_3 = new StringConcatenation();
+                _builder_3.append(asmName);
+                _builder_3.append(".");
                 String _name_2 = ((MonitoredFunction)fd).getCodomain().getName();
-                _builder_2.append(_name_2);
-                _builder_2.append(" ");
+                _builder_3.append(_name_2);
+                _builder_3.append(" ");
                 String _name_3 = ((MonitoredFunction)fd).getName();
-                _builder_2.append(_name_3);
-                _builder_2.append(",");
-                sb.append(_builder_2);
+                _builder_3.append(_name_3);
+                _builder_3.append(",");
+                sb.append(_builder_3);
               } else {
                 Domain _codomain_1 = ((MonitoredFunction)fd).getCodomain();
                 if ((_codomain_1 instanceof ConcreteDomain)) {
                   sb.append(System.lineSeparator()).append("\t\t");
-                  StringConcatenation _builder_3 = new StringConcatenation();
-                  _builder_3.append("int ");
+                  StringConcatenation _builder_4 = new StringConcatenation();
+                  _builder_4.append("int ");
                   String _name_4 = ((MonitoredFunction)fd).getName();
-                  _builder_3.append(_name_4);
-                  _builder_3.append(",");
-                  sb.append(_builder_3);
+                  _builder_4.append(_name_4);
+                  _builder_4.append(",");
+                  sb.append(_builder_4);
                 } else {
                   Domain _codomain_2 = ((MonitoredFunction)fd).getCodomain();
                   if ((_codomain_2 instanceof AbstractTd)) {
                     sb.append(System.lineSeparator()).append("\t\t");
-                    StringConcatenation _builder_4 = new StringConcatenation();
-                    _builder_4.append("int ");
+                    StringConcatenation _builder_5 = new StringConcatenation();
+                    _builder_5.append("int ");
                     String _name_5 = ((MonitoredFunction)fd).getName();
-                    _builder_4.append(_name_5);
-                    _builder_4.append(",");
-                    sb.append(_builder_4);
+                    _builder_5.append(_name_5);
+                    _builder_5.append(",");
+                    sb.append(_builder_5);
                   }
                 }
               }

@@ -88,7 +88,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 				System.out.println("<State "+ stato +" (controlled)>");
 				
 				printControlled();
-				setMonitored(''');
+				setMonitored( ''');
 			
 			for (fd : asm.headerSection.signature.function) {
 				if (fd instanceof MonitoredFunction) {
@@ -103,7 +103,6 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 					}
 				}
 			}
-			
 			sb.setLength(sb.length() - 1);
 			sb.append(''');
 				this.esecuzione.updateASM();
@@ -178,7 +177,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 					
 					}
 					
-					private void setMonitored(''');
+					private void setMonitored( ''');
 				
 			setMonitoredArgs(asm,sb);
 
@@ -494,6 +493,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 	
 	def setMonitoredArgs(Asm asm, StringBuffer sb) {
 		val asmName = asm.name
+		sb.append(''' ''')
 		for (fd : asm.headerSection.signature.function) {
 			if (fd instanceof MonitoredFunction) {
 				if (fd.domain === null) {
