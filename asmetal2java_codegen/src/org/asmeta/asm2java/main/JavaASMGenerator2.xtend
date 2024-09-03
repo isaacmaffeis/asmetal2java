@@ -262,8 +262,8 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 				else{ // fd.domain != null
 					for(dd : asm.headerSection.signature.domain){
 						if(dd.equals(fd.domain)){
+							sb.append("\t").append('''private void cover_«fd.name»(){''');
 							if(dd instanceof EnumTd){
-								sb.append("\t").append('''private void cover_«fd.name»(){''');
 								for (var int i = 0; i < dd.element.size; i++) {
 									var symbol = new ToString(asm).visit(dd.element.get(i))
 									sb.append(System.lineSeparator)
@@ -276,6 +276,16 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 								sb.append(System.lineSeparator)
 								sb.append(System.lineSeparator)
 							}
+							else {
+								sb.append(System.lineSeparator)
+								sb.append("\t\t").append('''this.get_«fd.name»();''');
+								sb.append(System.lineSeparator)
+								sb.append("\t\t").append('''//1 Branch covered''');
+							}
+							sb.append(System.lineSeparator)
+							sb.append("\t").append('''}''');
+							sb.append(System.lineSeparator)
+							sb.append(System.lineSeparator)
 						}
 					}
 				}

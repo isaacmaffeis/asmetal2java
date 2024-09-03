@@ -452,14 +452,14 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
           for (final Domain dd_1 : _domain_2) {
             boolean _equals_1 = dd_1.equals(fd.getDomain());
             if (_equals_1) {
+              StringBuffer _append_5 = sb.append("\t");
+              StringConcatenation _builder_6 = new StringConcatenation();
+              _builder_6.append("private void cover_");
+              String _name_3 = fd.getName();
+              _builder_6.append(_name_3);
+              _builder_6.append("(){");
+              _append_5.append(_builder_6);
               if ((dd_1 instanceof EnumTd)) {
-                StringBuffer _append_5 = sb.append("\t");
-                StringConcatenation _builder_6 = new StringConcatenation();
-                _builder_6.append("private void cover_");
-                String _name_3 = fd.getName();
-                _builder_6.append(_name_3);
-                _builder_6.append("(){");
-                _append_5.append(_builder_6);
                 for (int i = 0; (i < ((EnumTd)dd_1).getElement().size()); i++) {
                   {
                     String symbol = new ToString(asm).visit(((EnumTd)dd_1).getElement().get(i));
@@ -490,7 +490,28 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
                 _append_7.append(_builder_8);
                 sb.append(System.lineSeparator());
                 sb.append(System.lineSeparator());
+              } else {
+                sb.append(System.lineSeparator());
+                StringBuffer _append_8 = sb.append("\t\t");
+                StringConcatenation _builder_9 = new StringConcatenation();
+                _builder_9.append("this.get_");
+                String _name_4 = fd.getName();
+                _builder_9.append(_name_4);
+                _builder_9.append("();");
+                _append_8.append(_builder_9);
+                sb.append(System.lineSeparator());
+                StringBuffer _append_9 = sb.append("\t\t");
+                StringConcatenation _builder_10 = new StringConcatenation();
+                _builder_10.append("//1 Branch covered");
+                _append_9.append(_builder_10);
               }
+              sb.append(System.lineSeparator());
+              StringBuffer _append_10 = sb.append("\t");
+              StringConcatenation _builder_11 = new StringConcatenation();
+              _builder_11.append("}");
+              _append_10.append(_builder_11);
+              sb.append(System.lineSeparator());
+              sb.append(System.lineSeparator());
             }
           }
         }
