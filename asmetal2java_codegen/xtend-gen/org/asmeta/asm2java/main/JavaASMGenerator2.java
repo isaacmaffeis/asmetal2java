@@ -566,32 +566,52 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
             _builder_2.newLine();
             sb.append(_builder_2);
           }
-          if ((((((MonitoredFunction)fd).getCodomain() instanceof EnumTd) || 
-            (((MonitoredFunction)fd).getCodomain() instanceof ConcreteDomain)) || 
-            (((MonitoredFunction)fd).getCodomain() instanceof AbstractTd))) {
+          Domain _codomain = ((MonitoredFunction)fd).getCodomain();
+          if ((_codomain instanceof ConcreteDomain)) {
             StringConcatenation _builder_3 = new StringConcatenation();
             _builder_3.newLine();
             _builder_3.append("\t\t");
-            _builder_3.append("private ");
-            _builder_3.append(asmName, "\t\t");
-            _builder_3.append(".");
-            String _name_6 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_3.append("private int get_");
+            String _name_6 = ((MonitoredFunction)fd).getName();
             _builder_3.append(_name_6, "\t\t");
-            _builder_3.append(" get_");
-            String _name_7 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_7, "\t\t");
             _builder_3.append("(){");
             _builder_3.newLineIfNotEmpty();
             _builder_3.append("\t\t\t");
             _builder_3.append("return this.esecuzione.");
-            String _name_8 = ((MonitoredFunction)fd).getName();
-            _builder_3.append(_name_8, "\t\t\t");
-            _builder_3.append(".get();");
+            String _name_7 = ((MonitoredFunction)fd).getName();
+            _builder_3.append(_name_7, "\t\t\t");
+            _builder_3.append(".get().value;");
             _builder_3.newLineIfNotEmpty();
             _builder_3.append("\t\t");
             _builder_3.append("}");
             _builder_3.newLine();
             sb.append(_builder_3);
+          }
+          if (((((MonitoredFunction)fd).getCodomain() instanceof EnumTd) || 
+            (((MonitoredFunction)fd).getCodomain() instanceof AbstractTd))) {
+            StringConcatenation _builder_4 = new StringConcatenation();
+            _builder_4.newLine();
+            _builder_4.append("\t\t");
+            _builder_4.append("private ");
+            _builder_4.append(asmName, "\t\t");
+            _builder_4.append(".");
+            String _name_8 = ((MonitoredFunction)fd).getCodomain().getName();
+            _builder_4.append(_name_8, "\t\t");
+            _builder_4.append(" get_");
+            String _name_9 = ((MonitoredFunction)fd).getName();
+            _builder_4.append(_name_9, "\t\t");
+            _builder_4.append("(){");
+            _builder_4.newLineIfNotEmpty();
+            _builder_4.append("\t\t\t");
+            _builder_4.append("return this.esecuzione.");
+            String _name_10 = ((MonitoredFunction)fd).getName();
+            _builder_4.append(_name_10, "\t\t\t");
+            _builder_4.append(".get();");
+            _builder_4.newLineIfNotEmpty();
+            _builder_4.append("\t\t");
+            _builder_4.append("}");
+            _builder_4.newLine();
+            sb.append(_builder_4);
           }
         }
       }
@@ -666,32 +686,52 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
             _builder_2.newLine();
             sb.append(_builder_2);
           }
-          if ((((((ControlledFunction)fd).getCodomain() instanceof EnumTd) || 
-            (((ControlledFunction)fd).getCodomain() instanceof ConcreteDomain)) || 
-            (((ControlledFunction)fd).getCodomain() instanceof AbstractTd))) {
+          Domain _codomain = ((ControlledFunction)fd).getCodomain();
+          if ((_codomain instanceof ConcreteDomain)) {
             StringConcatenation _builder_3 = new StringConcatenation();
             _builder_3.newLine();
             _builder_3.append("\t\t");
-            _builder_3.append("public ");
-            _builder_3.append(asmName, "\t\t");
-            _builder_3.append(".");
-            String _name_6 = ((ControlledFunction)fd).getCodomain().getName();
+            _builder_3.append("public int get_");
+            String _name_6 = ((ControlledFunction)fd).getName();
             _builder_3.append(_name_6, "\t\t");
-            _builder_3.append(" get_");
-            String _name_7 = ((ControlledFunction)fd).getName();
-            _builder_3.append(_name_7, "\t\t");
             _builder_3.append("(){");
             _builder_3.newLineIfNotEmpty();
             _builder_3.append("\t\t\t");
             _builder_3.append("return this.esecuzione.");
-            String _name_8 = ((ControlledFunction)fd).getName();
-            _builder_3.append(_name_8, "\t\t\t");
-            _builder_3.append(".get();");
+            String _name_7 = ((ControlledFunction)fd).getName();
+            _builder_3.append(_name_7, "\t\t\t");
+            _builder_3.append(".get().value;");
             _builder_3.newLineIfNotEmpty();
             _builder_3.append("\t\t");
             _builder_3.append("}");
             _builder_3.newLine();
             sb.append(_builder_3);
+          }
+          if (((((ControlledFunction)fd).getCodomain() instanceof EnumTd) || 
+            (((ControlledFunction)fd).getCodomain() instanceof AbstractTd))) {
+            StringConcatenation _builder_4 = new StringConcatenation();
+            _builder_4.newLine();
+            _builder_4.append("\t\t");
+            _builder_4.append("public ");
+            _builder_4.append(asmName, "\t\t");
+            _builder_4.append(".");
+            String _name_8 = ((ControlledFunction)fd).getCodomain().getName();
+            _builder_4.append(_name_8, "\t\t");
+            _builder_4.append(" get_");
+            String _name_9 = ((ControlledFunction)fd).getName();
+            _builder_4.append(_name_9, "\t\t");
+            _builder_4.append("(){");
+            _builder_4.newLineIfNotEmpty();
+            _builder_4.append("\t\t\t");
+            _builder_4.append("return this.esecuzione.");
+            String _name_10 = ((ControlledFunction)fd).getName();
+            _builder_4.append(_name_10, "\t\t\t");
+            _builder_4.append(".get();");
+            _builder_4.newLineIfNotEmpty();
+            _builder_4.append("\t\t");
+            _builder_4.append("}");
+            _builder_4.newLine();
+            sb.append(_builder_4);
           }
         } else {
           EList<Domain> _domain_1 = asm.getHeaderSection().getSignature().getDomain();
@@ -703,78 +743,78 @@ public class JavaASMGenerator2 extends AsmToJavaGenerator {
                   {
                     String symbol = new ToString(asm).visit(((EnumTd)dd).getElement().get(i));
                     sb.append(System.lineSeparator());
-                    Domain _codomain = ((ControlledFunction)fd).getCodomain();
-                    if ((_codomain instanceof ConcreteDomain)) {
+                    Domain _codomain_1 = ((ControlledFunction)fd).getCodomain();
+                    if ((_codomain_1 instanceof ConcreteDomain)) {
                       StringBuffer _append = sb.append("\t");
-                      StringConcatenation _builder_4 = new StringConcatenation();
-                      _builder_4.append("public int get_");
-                      String _name_9 = ((ControlledFunction)fd).getName();
-                      _builder_4.append(_name_9);
-                      _builder_4.append("_");
-                      _builder_4.append(symbol);
-                      _builder_4.append("(){");
-                      _append.append(_builder_4);
+                      StringConcatenation _builder_5 = new StringConcatenation();
+                      _builder_5.append("public int get_");
+                      String _name_11 = ((ControlledFunction)fd).getName();
+                      _builder_5.append(_name_11);
+                      _builder_5.append("_");
+                      _builder_5.append(symbol);
+                      _builder_5.append("(){");
+                      _append.append(_builder_5);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_1 = sb.append("\t\t");
-                      StringConcatenation _builder_5 = new StringConcatenation();
-                      _builder_5.append("return this.esecuzione.");
-                      String _name_10 = ((ControlledFunction)fd).getName();
-                      _builder_5.append(_name_10);
-                      _builder_5.append(".oldValues.get(");
-                      _append_1.append(_builder_5);
+                      StringConcatenation _builder_6 = new StringConcatenation();
+                      _builder_6.append("return this.esecuzione.");
+                      String _name_12 = ((ControlledFunction)fd).getName();
+                      _builder_6.append(_name_12);
+                      _builder_6.append(".oldValues.get(");
+                      _append_1.append(_builder_6);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_2 = sb.append("\t\t\t");
-                      StringConcatenation _builder_6 = new StringConcatenation();
-                      _builder_6.append("this.esecuzione.");
-                      String _name_11 = ((ControlledFunction)fd).getDomain().getName();
-                      _builder_6.append(_name_11);
-                      _builder_6.append("_elemsList.get(");
-                      _builder_6.append(i);
-                      _builder_6.append(")).value;");
-                      _append_2.append(_builder_6);
+                      StringConcatenation _builder_7 = new StringConcatenation();
+                      _builder_7.append("this.esecuzione.");
+                      String _name_13 = ((ControlledFunction)fd).getDomain().getName();
+                      _builder_7.append(_name_13);
+                      _builder_7.append("_elemsList.get(");
+                      _builder_7.append(i);
+                      _builder_7.append(")).value;");
+                      _append_2.append(_builder_7);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_3 = sb.append("\t");
-                      StringConcatenation _builder_7 = new StringConcatenation();
-                      _builder_7.append("}");
-                      _append_3.append(_builder_7);
+                      StringConcatenation _builder_8 = new StringConcatenation();
+                      _builder_8.append("}");
+                      _append_3.append(_builder_8);
                     } else {
                       StringBuffer _append_4 = sb.append("\t");
-                      StringConcatenation _builder_8 = new StringConcatenation();
-                      _builder_8.append("public ");
-                      _builder_8.append(asmName);
-                      _builder_8.append(".");
-                      String _name_12 = ((ControlledFunction)fd).getCodomain().getName();
-                      _builder_8.append(_name_12);
-                      _builder_8.append(" get_");
-                      String _name_13 = ((ControlledFunction)fd).getName();
-                      _builder_8.append(_name_13);
-                      _builder_8.append("_");
-                      _builder_8.append(symbol);
-                      _builder_8.append("(){");
-                      _append_4.append(_builder_8);
+                      StringConcatenation _builder_9 = new StringConcatenation();
+                      _builder_9.append("public ");
+                      _builder_9.append(asmName);
+                      _builder_9.append(".");
+                      String _name_14 = ((ControlledFunction)fd).getCodomain().getName();
+                      _builder_9.append(_name_14);
+                      _builder_9.append(" get_");
+                      String _name_15 = ((ControlledFunction)fd).getName();
+                      _builder_9.append(_name_15);
+                      _builder_9.append("_");
+                      _builder_9.append(symbol);
+                      _builder_9.append("(){");
+                      _append_4.append(_builder_9);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_5 = sb.append("\t\t");
-                      StringConcatenation _builder_9 = new StringConcatenation();
-                      _builder_9.append("return this.esecuzione.");
-                      String _name_14 = ((ControlledFunction)fd).getName();
-                      _builder_9.append(_name_14);
-                      _builder_9.append(".oldValues.get(");
-                      _append_5.append(_builder_9);
+                      StringConcatenation _builder_10 = new StringConcatenation();
+                      _builder_10.append("return this.esecuzione.");
+                      String _name_16 = ((ControlledFunction)fd).getName();
+                      _builder_10.append(_name_16);
+                      _builder_10.append(".oldValues.get(");
+                      _append_5.append(_builder_10);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_6 = sb.append("\t\t\t");
-                      StringConcatenation _builder_10 = new StringConcatenation();
-                      _builder_10.append("this.esecuzione.");
-                      String _name_15 = ((ControlledFunction)fd).getDomain().getName();
-                      _builder_10.append(_name_15);
-                      _builder_10.append("_elemsList.get(");
-                      _builder_10.append(i);
-                      _builder_10.append("));");
-                      _append_6.append(_builder_10);
+                      StringConcatenation _builder_11 = new StringConcatenation();
+                      _builder_11.append("this.esecuzione.");
+                      String _name_17 = ((ControlledFunction)fd).getDomain().getName();
+                      _builder_11.append(_name_17);
+                      _builder_11.append("_elemsList.get(");
+                      _builder_11.append(i);
+                      _builder_11.append("));");
+                      _append_6.append(_builder_11);
                       sb.append(System.lineSeparator());
                       StringBuffer _append_7 = sb.append("\t");
-                      StringConcatenation _builder_11 = new StringConcatenation();
-                      _builder_11.append("}");
-                      _append_7.append(_builder_11);
+                      StringConcatenation _builder_12 = new StringConcatenation();
+                      _builder_12.append("}");
+                      _append_7.append(_builder_12);
                     }
                     sb.append(System.lineSeparator());
                   }

@@ -313,8 +313,15 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 								}
 						 	''');
 					}
+					if (fd.codomain instanceof ConcreteDomain) {
+						sb.append('''
+						
+								private int get_«fd.name»(){
+									return this.esecuzione.«fd.name».get().value;
+								}
+						 	'''); 	
+					}
 					if (fd.codomain instanceof EnumTd || 
-						fd.codomain instanceof ConcreteDomain || 
 						fd.codomain instanceof AbstractTd) {
 						sb.append('''
 						
@@ -357,8 +364,15 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 								}
 						 	''');
 					}
+					if (fd.codomain instanceof ConcreteDomain) {
+						sb.append('''
+						
+								public int get_«fd.name»(){
+									return this.esecuzione.«fd.name».get().value;
+								}
+						 	'''); 	
+					}
 					if (fd.codomain instanceof EnumTd || 
-						fd.codomain instanceof ConcreteDomain || 
 						fd.codomain instanceof AbstractTd) {
 						sb.append('''
 						
@@ -368,7 +382,7 @@ class JavaASMGenerator2 extends AsmToJavaGenerator {
 						 	''');
 					}
 				}
-				else{ // TODO: Da sistemare i getter per le funzioni con Dominio -> Codominio
+				else{ // getter per le funzioni con Dominio -> Codominio
 				
 					for(dd : asm.headerSection.signature.domain){
 						if(dd.equals(fd.domain)){
