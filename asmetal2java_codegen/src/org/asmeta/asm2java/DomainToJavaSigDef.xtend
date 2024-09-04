@@ -145,10 +145,7 @@ class DomainToJavaSigDef extends ReflectiveVisitor<String> {
 				sb.append('''«new ToString(res).visit(object.element.get(i))»}
 				''')
 		}
-		
-		sb.append(System.lineSeparator)
-		sb.append('''
-			List<«object.name»> «object.name»_elemsList = new ArrayList<>();''')
+
 		return sb.toString
 	}
 
@@ -165,19 +162,19 @@ class DomainToJavaSigDef extends ReflectiveVisitor<String> {
 			static class «object.name» {
 				static List<«object.name»> elems = new ArrayList<>();
 				«isStatic + " "»List<String> val = new ArrayList<>();
-			
+
 			«object.name» (String a) {
 			      elems.add(this);
 			      val.add(a);
 			      }
-			      
+
 			      String toString(«object.name» a) {
 			      if(elems.contains(a)) {
 			      return val.get(elems.lastIndexOf(a));
 			      }
 			      else return null;
 			      }
-			      
+
 			«object.name» get(String a) {
 			      if(val.contains(a)) {
 			      return elems.get(val.lastIndexOf(a));
@@ -185,7 +182,7 @@ class DomainToJavaSigDef extends ReflectiveVisitor<String> {
 			      else return null;
 			      }
 			      }
-			      
+
 			      List<String> «object.name»_elemsList = new ArrayList<>();
 			      List<«object.name»> «object.name»_Class = new ArrayList<>();
 		''')
@@ -200,47 +197,47 @@ class DomainToJavaSigDef extends ReflectiveVisitor<String> {
 		if (object.isDynamic) {
 			sb.append('''
 				class  «object.name»{
-				
-				List<«new ToString(res).visit(object.typeDomain)»> elems = new ArrayList<>();			      
-				«new ToString(res).visit(object.typeDomain)» value;			      
-				«object.name»(«new ToString(res).visit(object.typeDomain)» i) { 
+
+				List<«new ToString(res).visit(object.typeDomain)»> elems = new ArrayList<>();
+				«new ToString(res).visit(object.typeDomain)» value;
+				«object.name»(«new ToString(res).visit(object.typeDomain)» i) {
 				   value = i;
 				   }
 				   }
-				   
+
 				   List<«new ToString(res).visit(object.typeDomain)»> «object.name»_elems = new ArrayList<>();
 			''')
 
-		} // Static classes -> The list of elements is set after this definition 
+		} // Static classes -> The list of elements is set after this definition
 		else {
 			sb.append('''static class  «object.name» {
 				static List<«new ToString(res).visit(object.typeDomain)»> elems = new ArrayList<>();
                 «new ToString(res).visit(object.typeDomain)» value;
-                
+
                 static «object.name» valueOf(«new ToString(res).visit(object.typeDomain)» val) {
                 	«object.name» n = new «object.name»();
                 	n.value = val;
                 	return n;
 				}
-				
+
 				static «object.name» valueOf(«object.name» val) {
 				                	return val;
 								}
-				
+
 				@Override
 					public boolean equals(Object obj) {
 						if (!(obj instanceof «object.name»)) return false;
 						return value.equals(((«object.name»)obj).value);
 					}
-				
-				
+
+
 				@Override
 						public int hashCode() {
 							return value.hashCode();
 						}
-						
+
 				}
-				
+
 				«object.name» «object.name»_elem = new «object.name»();
 				List<«new ToString(res).visit(object.typeDomain)»> «object.name»_elems = new ArrayList<>();
 			''')

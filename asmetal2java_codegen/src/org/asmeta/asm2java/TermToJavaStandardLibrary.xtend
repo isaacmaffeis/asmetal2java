@@ -102,12 +102,11 @@ class TermToJavaStandardLibrary extends TermToJava {
 	override dispatch String caseFunctionTermSupp(MonitoredFunction fd, FunctionTerm ft) {
 		var StringBuffer functionTerm = new StringBuffer
 		if (ft.arguments === null)
-			if (leftHandSide){
+			if (leftHandSide)
 				functionTerm.append(".set(")
-			} else if(fd.codomain instanceof ConcreteDomain){
-					functionTerm.append(".get().value")
-			} else{
+			else {
 				functionTerm.append(".get()")
+
 			}
 
 		if (ft.arguments !== null) {
@@ -141,12 +140,12 @@ class TermToJavaStandardLibrary extends TermToJava {
 					// The domain is structured. Check whether the i-th parameter has the domain as expected
 					if ((ft.function.domain instanceof ProductDomain)) {
 						if ((ft.function.domain as ProductDomain).domains.get(i).equals(ft.arguments.terms.get(i).domain))
-							param = param.replaceAll("\\.value","")	
-					}					
+							param = param.replaceAll("\\.value","")
+					}
 				} else {
 					// The domain is not structured. Check whether the parameter has the domain as expected
 					if (ft.domain.equals(ft.arguments.terms.get(i).domain))
-							param = param.replaceAll("\\.value","")	
+							param = param.replaceAll("\\.value","")
 				}
 				functionTerm.append(param + ", ")
 			}
