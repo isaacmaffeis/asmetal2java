@@ -143,7 +143,7 @@ public class MainClass {
 
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileExe, outputFolder);
-		exportFile(javaFileASM, outputFolder);
+		//exportFile(javaFileASM, outputFolder);
 
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
