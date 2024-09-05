@@ -23,7 +23,7 @@ import org.eclipse.xtext.xbase.lib.Conversions;
 import org.junit.Assert;
 
 @SuppressWarnings("all")
-public class JavaASMGenerator2 extends AsmToJavaGenerator {
+public class JavaASMGenerator extends AsmToJavaGenerator {
   public void compileAndWrite(final Asm asm, final String writerPath, final TranslatorOptions userOptions) {
     Assert.assertTrue(writerPath.endsWith(".java"));
     this.compileAndWrite(asm, writerPath, "JAVA", userOptions);

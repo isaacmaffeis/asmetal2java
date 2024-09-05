@@ -44,7 +44,7 @@ public class MainClass {
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
 	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
-	static private JavaASMGenerator2 jGeneratorASM = new JavaASMGenerator2();
+	static private JavaASMGenerator jGeneratorASM = new JavaASMGenerator();
 
 
 	// default translator options
