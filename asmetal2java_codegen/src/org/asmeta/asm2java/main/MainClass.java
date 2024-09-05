@@ -44,7 +44,7 @@ public class MainClass {
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
 	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
-	static private JavaASMGenerator2 jGeneratorASM = new JavaASMGenerator2();
+	//static private JavaASMGenerator2 jGeneratorASM = new JavaASMGenerator2();
 
 
 	// default translator options
@@ -122,10 +122,10 @@ public class MainClass {
 		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
 			// ASM Class
-			jGeneratorASM.setFinalStateConditions(finalStateConditions);
-			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASM.getCanonicalPath(), userOptions);
+			//jGeneratorASM.setFinalStateConditions(finalStateConditions);
+			//jGeneratorASM.compileAndWrite(model.getMain(), javaFileASM.getCanonicalPath(), userOptions);
 			jGenerator.compileAndWrite(model.getMain(), javaFileASMN.getCanonicalPath(), userOptions);
-			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
+			//jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
 
 		} catch (Exception e) {
 			e.printStackTrace();
