@@ -234,16 +234,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
         sb.append(_builder_2);
       }
     }
-    sb.append(System.lineSeparator());
-    StringConcatenation _builder_1 = new StringConcatenation();
-    _builder_1.append("List<");
-    String _name_1 = object.getName();
-    _builder_1.append(_name_1);
-    _builder_1.append("> ");
-    String _name_2 = object.getName();
-    _builder_1.append(_name_2);
-    _builder_1.append("_elemsList = new ArrayList<>();");
-    sb.append(_builder_1);
     return sb.toString();
   }
 
@@ -285,7 +275,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
     _builder.append("      ");
     _builder.append("}");
     _builder.newLine();
-    _builder.append("      ");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("String toString(");
@@ -308,7 +297,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
     _builder.append("      ");
     _builder.append("}");
     _builder.newLine();
-    _builder.append("      ");
     _builder.newLine();
     String _name_4 = object.getName();
     _builder.append(_name_4);
@@ -332,7 +320,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
     _builder.append("      ");
     _builder.append("}");
     _builder.newLine();
-    _builder.append("      ");
     _builder.newLine();
     _builder.append("      ");
     _builder.append("List<String> ");
@@ -367,18 +354,18 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder.append("List<");
       String _visit = new ToString(this.res).visit(object.getTypeDomain());
       _builder.append(_visit);
-      _builder.append("> elems = new ArrayList<>();\t\t\t      ");
+      _builder.append("> elems = new ArrayList<>();");
       _builder.newLineIfNotEmpty();
       String _visit_1 = new ToString(this.res).visit(object.getTypeDomain());
       _builder.append(_visit_1);
-      _builder.append(" value;\t\t\t      ");
+      _builder.append(" value;");
       _builder.newLineIfNotEmpty();
       String _name_1 = object.getName();
       _builder.append(_name_1);
       _builder.append("(");
       String _visit_2 = new ToString(this.res).visit(object.getTypeDomain());
       _builder.append(_visit_2);
-      _builder.append(" i) { ");
+      _builder.append(" i) {");
       _builder.newLineIfNotEmpty();
       _builder.append("   ");
       _builder.append("value = i;");
@@ -389,7 +376,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder.append("   ");
       _builder.append("}");
       _builder.newLine();
-      _builder.append("   ");
       _builder.newLine();
       _builder.append("   ");
       _builder.append("List<");
@@ -419,7 +405,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder_1.append(_visit_5, "                ");
       _builder_1.append(" value;");
       _builder_1.newLineIfNotEmpty();
-      _builder_1.append("                ");
       _builder_1.newLine();
       _builder_1.append("                ");
       _builder_1.append("static ");
@@ -447,7 +432,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder_1.append("\t\t\t\t");
       _builder_1.append("}");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t");
       _builder_1.newLine();
       _builder_1.append("\t\t\t\t");
       _builder_1.append("static ");
@@ -464,7 +448,6 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder_1.append("\t\t\t\t\t\t\t\t");
       _builder_1.append("}");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t");
       _builder_1.newLine();
       _builder_1.append("\t\t\t\t");
       _builder_1.append("@Override");
@@ -487,9 +470,7 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder_1.append("\t\t\t\t\t");
       _builder_1.append("}");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t");
       _builder_1.newLine();
       _builder_1.append("\t\t\t\t");
       _builder_1.append("@Override");
@@ -503,12 +484,10 @@ public class DomainToJavaSigDef extends ReflectiveVisitor<String> {
       _builder_1.append("\t\t\t\t\t\t");
       _builder_1.append("}");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t\t\t");
       _builder_1.newLine();
       _builder_1.append("\t\t\t\t");
       _builder_1.append("}");
       _builder_1.newLine();
-      _builder_1.append("\t\t\t\t");
       _builder_1.newLine();
       _builder_1.append("\t\t\t\t");
       String _name_11 = object.getName();
