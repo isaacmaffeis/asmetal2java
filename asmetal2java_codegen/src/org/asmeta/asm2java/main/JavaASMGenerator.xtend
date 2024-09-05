@@ -473,8 +473,8 @@ class JavaASMGenerator extends AsmToJavaGenerator {
 													sb.append("\t").append('''public Srting get_«fd.name»_«symbol»(){''');
 												}
 												else{
-													sb.append("\t").append('''public «fd.codomain.name» get_«fd.name»_«symbol»(){''');
-												}	
+													sb.append("\t").append('''public «asm.name».«fd.codomain.name» get_«fd.name»_«symbol»(){''');
+												}
 												sb.append(System.lineSeparator)
 												sb.append("\t\t").append('''return this.esecuzione.«fd.name».oldValues.get(''');
 												sb.append(System.lineSeparator)
@@ -482,7 +482,7 @@ class JavaASMGenerator extends AsmToJavaGenerator {
 												sb.append(System.lineSeparator)
 												sb.append("\t\t\t").append('''this.esecuzione.«fd.domain.name»_elemsList.indexOf("«symbol»")));''');
 												sb.append(System.lineSeparator)
-												sb.append("\t").append('''}''');	
+												sb.append("\t").append('''}''');
 											} 
 											sb.append(System.lineSeparator)	
 										}
