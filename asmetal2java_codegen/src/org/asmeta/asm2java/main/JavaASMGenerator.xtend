@@ -695,6 +695,51 @@ class JavaASMGenerator extends AsmToJavaGenerator {
 						sb.append('''boolean «fd.name»_i),''')
 					}
 					*/
+					
+					if(fd.domain instanceof EnumTd){
+						// TODO: Enum -> Codomain
+					}
+					else if(fd.domain instanceof AbstractTd){
+						for (sf : asm.headerSection.signature.function) { // controllo le funzioni statiche e prendo quelle che aggiungono al dominio astratto
+							if(sf instanceof StaticFunction){
+								if(sf.codomain.equals(fd.domain)){
+									var symbol = sf.name
+									if(fd.codomain.name.equals("Integer") && !(fd.codomain instanceof ConcreteDomain)){
+										sb.append(System.lineSeparator()).append("\t\t")
+										sb.append('''int «fd.name»_«symbol»,''')
+									}
+									else if(fd.codomain.name.equals("Boolean") && !(fd.codomain instanceof ConcreteDomain)){
+										sb.append(System.lineSeparator()).append("\t\t")
+										sb.append('''boolean «fd.name»_«symbol»,''')	
+									}
+									else if(fd.codomain.name.equals("String") && !(fd.codomain instanceof ConcreteDomain)){
+										sb.append(System.lineSeparator()).append("\t\t")
+										sb.append('''String «fd.name»_«symbol»,''')	
+									}
+									else if (fd.codomain instanceof EnumTd) {
+										// TODO: fare un set per ogni elemento del dominio enum
+										sb.append(System.lineSeparator()).append("\t\t")
+										sb.append('''«asmName».«fd.codomain.name» «fd.name»_«symbol»,''')
+									}
+									else if (fd.codomain instanceof ConcreteDomain) {
+										sb.append(System.lineSeparator()).append("\t\t")
+										sb.append('''int «fd.name»_«symbol»,''')
+									}
+									else if (fd.codomain instanceof AbstractTd) {
+										for (sfc : asm.headerSection.signature.function) { // controllo le funzioni statiche e prendo quelle che aggiungono al dominio astratto
+											if(sfc instanceof StaticFunction){
+												if(sfc.codomain.equals(fd.codomain)){
+													var symbol_codomain = sf.name
+													sb.append(System.lineSeparator()).append("\t\t")
+													sb.append('''«asm.name».«fd.codomain» «fd.name»_«symbol»_«symbol_codomain»,''')
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -768,10 +813,46 @@ class JavaASMGenerator extends AsmToJavaGenerator {
 						''')
 					}
 					*/
+					if(fd.domain instanceof EnumTd){
+						// TODO: Enum -> Codomain
+					}
+					else if(fd.domain instanceof AbstractTd){
+						for (sf : asm.headerSection.signature.function) { // controllo le funzioni statiche e prendo quelle che aggiungono al dominio astratto
+							if(sf instanceof StaticFunction){
+								if(sf.codomain.equals(fd.domain)){ 
+									var symbol = sf.name
+									if(fd.codomain instanceof AbstractTd){
+										for (sfc : asm.headerSection.signature.function) { // controllo le funzioni statiche e prendo quelle che aggiungono al codominio astratto
+											if(sfc instanceof StaticFunction){
+												if(sfc.codomain.equals(fd.codomain)){
+													var symbol_codomain = sf.name
+								    sb.append('''
+									this.esecuzione.«fd.name».set(
+									this.esecuzione.«fd.domain.name»_Class.get(
+									this.esecuzione.«fd.domain.name»_elemsList.indexOf("«symbol»")),«fd.name»_«symbol»_«symbol_codomain»);
+									System.out.println("Set «fd.name»_«symbol» = " + «fd.name»_«symbol»);''')
+									sb.append(System.lineSeparator)
+									sb.append(System.lineSeparator)
+													sb.append(System.lineSeparator()).append("\t\t")
+													sb.append('''«asm.name».«fd.codomain» «fd.name»_«symbol»_«symbol_codomain»,''')
+												}
+											}
+										}
+									} else {
+										sb.append('''
+										this.esecuzione.«fd.name».set(
+										this.esecuzione.«fd.domain.name»_Class.get(
+										this.esecuzione.«fd.domain.name»_elemsList.indexOf("«symbol»")),«fd.name»_«symbol»);
+										System.out.println("Set «fd.name»_«symbol» = " + «fd.name»_«symbol»);''')
+										sb.append(System.lineSeparator)
+										sb.append(System.lineSeparator)
+									}
+								}
+							}
+						}
+					}
 				}
-
 			}
-
 		}
 
 		return sb.toString
