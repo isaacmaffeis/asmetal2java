@@ -230,4 +230,4 @@ default init s0:
 										case card2 : 1652
 										case card3 : 548
 									endswitch
-	function accessible($c in NumCard) = true	
+	function accessible($c in NumCard) = true
