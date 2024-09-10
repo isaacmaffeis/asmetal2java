@@ -3,6 +3,7 @@ package org.asmeta.asm2java.main;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -96,6 +97,8 @@ public class MainClass {
 		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
 		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
 
+		File parserSupport = new File(dir.getPath() + File.separator + "parserSupport" + ".txt");
+
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
 		deleteExisting(javaFileExe);
@@ -105,6 +108,7 @@ public class MainClass {
 		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
 		deleteExisting(javaFileExeT);
+		deleteExisting(parserSupport);
 
 		System.out.println("\n\n===" + name + " ===================");
 
@@ -127,6 +131,15 @@ public class MainClass {
 			jGenerator.compileAndWrite(model.getMain(), javaFileASMN.getCanonicalPath(), userOptions);
 			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
 
+			// Parser support
+			StringBuffer stepArgs = new StringBuffer();
+			jGeneratorASM.setMonitoredArgs(model.getMain(), stepArgs);
+			FileWriter fileWriter = new FileWriter(parserSupport);
+			fileWriter.write(stepArgs.toString().
+							replaceAll("\t","").
+							replaceFirst(" " + System.lineSeparator(),""));
+			fileWriter.close();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new CompileResult(false, e.getMessage());
@@ -136,6 +149,7 @@ public class MainClass {
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
 		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
+		System.out.println("Generated parser support file: " + parserSupport.getCanonicalPath());
 
 		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
@@ -144,7 +158,7 @@ public class MainClass {
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileExe, outputFolder);
 		exportFile(javaFileASM, outputFolder);
-
+		exportFile(parserSupport, outputFolder);
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
 
