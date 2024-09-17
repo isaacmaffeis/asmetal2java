@@ -97,7 +97,7 @@ public class MainClass {
 		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
 		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
 
-		File parserSupport = new File(dir.getPath() + File.separator + "parserSupport" + ".txt");
+		File stepFunctionArgs = new File(dir.getPath() + File.separator + "StepFunctionArgs" + ".txt");
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
@@ -108,7 +108,7 @@ public class MainClass {
 		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
 		deleteExisting(javaFileExeT);
-		deleteExisting(parserSupport);
+		deleteExisting(stepFunctionArgs);
 
 		System.out.println("\n\n===" + name + " ===================");
 
@@ -134,7 +134,7 @@ public class MainClass {
 			// Parser support
 			StringBuffer stepArgs = new StringBuffer();
 			jGeneratorASM.setMonitoredArgs(model.getMain(), stepArgs);
-			FileWriter fileWriter = new FileWriter(parserSupport);
+			FileWriter fileWriter = new FileWriter(stepFunctionArgs);
 			fileWriter.write(stepArgs.toString().
 							replaceAll("\t","").
 							replaceFirst(" " + System.lineSeparator(),""));
@@ -149,7 +149,7 @@ public class MainClass {
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
 		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
-		System.out.println("Generated parser support file: " + parserSupport.getCanonicalPath());
+		System.out.println("Generated parser support file: " + stepFunctionArgs.getCanonicalPath());
 
 		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
@@ -158,7 +158,7 @@ public class MainClass {
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileExe, outputFolder);
 		exportFile(javaFileASM, outputFolder);
-		exportFile(parserSupport, outputFolder);
+		exportFile(stepFunctionArgs, outputFolder);
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
 
@@ -286,7 +286,7 @@ public class MainClass {
 		try {
 			line = parser.parse(options, args);
 		} catch (ParseException e) {
-			System.err.println("Failed to parse commandline arguments.");
+			logger.error("Failed to parse commandline arguments.");
 		}
 		return line;
 	}
@@ -313,7 +313,7 @@ public class MainClass {
             	translatorOptions.setValue(propertyName, propertyValue);
 				
 			} catch (Exception e) {
-				System.err.println("Invalid value for property " + propertyName + ": " + propertyValue);
+				logger.error("Invalid value for property " + propertyName + ": " + propertyValue);
 			}
 		}
 		
@@ -334,7 +334,7 @@ public class MainClass {
 		if (line.hasOption("input")) {
 			asmspec = line.getOptionValue("input");
 		}else {
-			System.out.println("input option needs a path to the asm file");
+			logger.error("input option needs a path to the asm file");
 		}
 		
 		String outputFolder = "";
