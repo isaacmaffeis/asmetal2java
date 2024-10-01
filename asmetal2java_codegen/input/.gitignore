@@ -2,3 +2,5 @@
 *.java
 *.txt
 !StandardLibrary.asm
+!CTLLibrary.asm
+!LTLLibrary.asm
