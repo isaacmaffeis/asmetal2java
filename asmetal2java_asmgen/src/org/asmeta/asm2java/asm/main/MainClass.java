@@ -101,7 +101,7 @@ public class MainClass {
 		deleteExisting(javaFileT);
 		deleteExisting(stepFunctionArgs);
 
-		System.out.println("\n\n===" + name + " ===================");
+		logger.info("\n\n===" + name + " ===================");
 
 		// write java
 		try {
@@ -131,12 +131,12 @@ public class MainClass {
 			return new CompileResult(false, e.getMessage());
 		}
 
-		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
-		System.out.println("Generated java compiled file: " + javaFileCompilazione.getCanonicalPath());
-		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
-		System.out.println("Generated parser support file: " + stepFunctionArgs.getCanonicalPath());
+		logger.info("Generated java file: " + javaFile.getCanonicalPath());
+		logger.info("Generated java compiled file: " + javaFileCompilazione.getCanonicalPath());
+		logger.info("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
+		logger.info("Generated parser support file: " + stepFunctionArgs.getCanonicalPath());
 
-		System.out.println("All java files Generated in: " + javaFileT.getCanonicalPath());
+		logger.info("All java files Generated in: " + javaFileT.getCanonicalPath());
 
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileASM, outputFolder);
@@ -365,6 +365,12 @@ public class MainClass {
 			MainClass main = new MainClass ();
 			Options options = getCommandLineOptions();
 			CommandLine line = main.parseCommandLine(args, options);
+			logger.info("\r\n    _                       _        _ ____   _                  \r\n"
+					+ "   / \\   ___ _ __ ___   ___| |_ __ _| |___ \\ (_) __ ___   ____ _ \r\n"
+					+ "  / _ \\ / __| '_ ` _ \\ / _ \\ __/ _` | | __) || |/ _` \\ \\ / / _` |\r\n"
+					+ " / ___ \\\\__ \\ | | | | |  __/ || (_| | |/ __/ | | (_| |\\ V / (_| |\r\n"
+					+ "/_/   \\_\\___/_| |_| |_|\\___|\\__\\__,_|_|_____|/ |\\__,_| \\_/ \\__,_|\r\n"
+					+ "                                           |__/                  \r\n");
 			logger.info("Performing requested operation ...");
 			if (line == null || line.hasOption("help") || line.getOptions().length == 0) {
 				HelpFormatter formatter = new HelpFormatter();
