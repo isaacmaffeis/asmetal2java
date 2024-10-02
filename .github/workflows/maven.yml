@@ -32,5 +32,5 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: artifact-asmetal2java_asmgen-jar
-        path: asmetal2java_codegen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+        path: asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
         retention-days: 1 
