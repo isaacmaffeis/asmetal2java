@@ -79,7 +79,7 @@ public class MainClass {
 
 		String dirCompilazione = asmFile.getParentFile().getPath() + "/compilazione";
 		String dirEsecuzione = asmFile.getParentFile().getPath() + "/esecuzione";
-		String dirTraduzione = asmFile.getParentFile().getPath() + "/Traduzione";
+		String dirTraduzione = asmFile.getParentFile().getPath() + "/traduzione";
 
 		// AC
 		File javaFile = new File(dir.getPath() + File.separator + name + ".java");
