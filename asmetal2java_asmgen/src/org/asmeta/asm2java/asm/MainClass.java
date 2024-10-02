@@ -1,4 +1,4 @@
-package org.asmeta.asm2java.main;
+package org.asmeta.asm2java.asm;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -8,10 +8,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -25,6 +23,10 @@ import org.apache.commons.cli.ParseException;
 import org.apache.log4j.Logger;
 import org.asmeta.asm2java.compiler.CompilatoreJava;
 import org.asmeta.asm2java.compiler.CompileResult;
+import org.asmeta.asm2java.main.JavaASMGenerator;
+import org.asmeta.asm2java.main.JavaExeGenerator;
+import org.asmeta.asm2java.main.JavaGenerator;
+import org.asmeta.asm2java.main.TranslatorOptions;
 import org.asmeta.parser.ASMParser;
 
 import asmeta.AsmCollection;
