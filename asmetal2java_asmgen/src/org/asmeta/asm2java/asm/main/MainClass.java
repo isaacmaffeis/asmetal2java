@@ -1,4 +1,4 @@
-package org.asmeta.asm2java.asm;
+package org.asmeta.asm2java.asm.main;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
