@@ -3,15 +3,12 @@ package org.asmeta.asm2java.main;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
@@ -45,8 +42,6 @@ public class MainClass {
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
 	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
-	static private JavaASMGenerator jGeneratorASM = new JavaASMGenerator();
-
 
 	// default translator options
 	private static TranslatorOptions translatorOptions =
@@ -64,8 +59,7 @@ public class MainClass {
 	public static CompileResult generate(
       String asmspec,
 			TranslatorOptions userOptions,
-			String outputFolder,
-			String[] finalStateConditions)
+			String outputFolder)
 			throws Exception {
 		//
 		// PARSE THE SPECIFICATION
@@ -82,63 +76,39 @@ public class MainClass {
 
 		String dirCompilazione = asmFile.getParentFile().getPath() + "/compilazione";
 		String dirEsecuzione = asmFile.getParentFile().getPath() + "/esecuzione";
-		String dirTraduzione = asmFile.getParentFile().getPath() + "/Traduzione";
+		String dirTraduzione = asmFile.getParentFile().getPath() + "/traduzione";
 
 		// AC
 		//File javaFile = new File(SRC_GEN + File.separator + name + ".java");
-    File javaFile = new File(dir.getPath() + File.separator + name + ".java");
+		File javaFile = new File(dir.getPath() + File.separator + name + ".java");
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
 		File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
 		File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
-		File javaFileASM = new File(dirEsecuzione + File.separator + name + "_ASM.java");
-		File javaFileASMN = new File(dirEsecuzione + File.separator + name + ".java");
 
 		File javaFileT = new File(dirTraduzione + File.separator + name + ".java");
 		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
-		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
-
-		File stepFunctionArgs = new File(dir.getPath() + File.separator + "StepFunctionArgs" + ".txt");
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
 		deleteExisting(javaFileExe);
 		deleteExisting(javaFileExeN);
-		deleteExisting(javaFileASM);
-		deleteExisting(javaFileASMN);
-		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
 		deleteExisting(javaFileExeT);
-		deleteExisting(stepFunctionArgs);
 
 		System.out.println("\n\n===" + name + " ===================");
 
 		// write java
 		try {
 			// Java Class
-		  jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
-		  jGenerator.compileAndWrite(model.getMain(),
+			jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
+			jGenerator.compileAndWrite(model.getMain(),
 					javaFileCompilazione.getCanonicalPath(),
 					userOptions);
 
 			// EXE Class
 			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
 			jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
-		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
-
-			// ASM Class
-			jGeneratorASM.setFinalStateConditions(finalStateConditions);
-			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASM.getCanonicalPath(), userOptions);
-			jGenerator.compileAndWrite(model.getMain(), javaFileASMN.getCanonicalPath(), userOptions);
-			jGeneratorASM.compileAndWrite(model.getMain(), javaFileASMT.getCanonicalPath(), userOptions);
-
-			// Parser support
-			StringBuffer stepArgs = new StringBuffer();
-			jGeneratorASM.setMonitoredArgs(model.getMain(), stepArgs);
-			FileWriter fileWriter = new FileWriter(stepFunctionArgs);
-			fileWriter.write(stepArgs.toString().
-							replaceAll("\t","").
-							replaceFirst(" " + System.lineSeparator(),""));
-			fileWriter.close();
+			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,8 +118,6 @@ public class MainClass {
 		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
 		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
-		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
-		System.out.println("Generated parser support file: " + stepFunctionArgs.getCanonicalPath());
 
 		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
@@ -157,8 +125,6 @@ public class MainClass {
 
 		exportFile(javaFile, outputFolder);
 		exportFile(javaFileExe, outputFolder);
-		exportFile(javaFileASM, outputFolder);
-		exportFile(stepFunctionArgs, outputFolder);
 
 		CompileResult result = CompilatoreJava.compile(name + ".java", dir, true);
 
@@ -235,19 +201,6 @@ public class MainClass {
 				.hasArg(true)
 				.desc("The output folder (optional, defaults to `./output/`)")
 				.build();
-
-		// final state condition (Only for ASM scenario generator)
-		Option finalState = Option.builder("finalState")
-				.argName("finalState")
-				.type(String.class)
-				.hasArg(true)
-				.desc("Final state condition:\n"
-						+ "(for ASM scenario generation only)\n"
-						+ "Allows you to specify the final state condition,\n"
-						+ " in order to help automatic scenario generation.\n"
-						+ "Add the conditions separated by ':'\n"
-						+ "example: state>=5:total>=50")
-				.build();
 		
 		// property
 		Option property = Option.builder("D")
@@ -267,7 +220,6 @@ public class MainClass {
 		options.addOption(help);
 		options.addOption(input);
 		options.addOption(output);
-		options.addOption(finalState);
 		options.addOption(property);
 
 		return options;
@@ -343,18 +295,12 @@ public class MainClass {
 		} else {
 			outputFolder = line.getOptionValue("output");
 		}
-
-		String[] finalStateConditions = null;
-		if(line.hasOption("finalState")){
-			finalStateConditions = line.getOptionValue("finalState").split(":");
-		}
-		
+	
 		try {
 			CompileResult compileResult = generate(
 					asmspec,
 					translatorOptions,
-					outputFolder,
-					finalStateConditions);
+					outputFolder);
 			if(compileResult.getSuccess()){
 				logger.info("Generation succeed : " + compileResult.toString());
 			}

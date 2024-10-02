@@ -364,10 +364,10 @@ public class JavaExeGenerator extends AsmToJavaGenerator {
             _builder_6.append(" =>  (\" + esecuzione.");
             String _name_17 = ((ControlledFunction)fd).getDomain().getName();
             _builder_6.append(_name_17, "\t\t\t");
-            _builder_6.append("_elemsList.get(i) +\") ");
+            _builder_6.append("_elemsList.get(i) +");
             _builder_6.newLineIfNotEmpty();
             _builder_6.append("\t\t\t");
-            _builder_6.append("= \" + esecuzione.");
+            _builder_6.append("\") = \" + esecuzione.");
             String _name_18 = ((ControlledFunction)fd).getName();
             _builder_6.append(_name_18, "\t\t\t");
             _builder_6.append(".oldValues.get(esecuzione.");
@@ -397,10 +397,10 @@ public class JavaExeGenerator extends AsmToJavaGenerator {
             _builder_7.append(" =>  (\" + esecuzione.");
             String _name_22 = ((ControlledFunction)fd).getDomain().getName();
             _builder_7.append(_name_22, "\t\t\t");
-            _builder_7.append("_elemsList.get(i) +\") ");
+            _builder_7.append("_elemsList.get(i) +");
             _builder_7.newLineIfNotEmpty();
             _builder_7.append("\t\t\t");
-            _builder_7.append("= \"+ esecuzione.");
+            _builder_7.append("\") = \"+ esecuzione.");
             String _name_23 = ((ControlledFunction)fd).getName();
             _builder_7.append(_name_23, "\t\t\t");
             _builder_7.append(".oldValues.get(esecuzione.");
