@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.asmeta.asm2java.compiler.CompilatoreJava;
 import org.asmeta.asm2java.compiler.CompileResult;
 import org.asmeta.asm2java.main.JavaASMGenerator;
-import org.asmeta.asm2java.main.JavaExeGenerator;
 import org.asmeta.asm2java.main.JavaGenerator;
 import org.asmeta.asm2java.main.TranslatorOptions;
 import org.asmeta.parser.ASMParser;
@@ -41,12 +40,8 @@ public class MainClass {
 	
 	private static final Logger logger = Logger.getLogger(MainClass.class);
 
-	// default output folder
-	private static final String SRC_GEN = "../asmetal2java_examples/src/";
-
 	// the generator for the code
 	static private JavaGenerator jGenerator = new JavaGenerator();
-	static private JavaExeGenerator jGeneratorExe = new JavaExeGenerator();
 	static private JavaASMGenerator jGeneratorASM = new JavaASMGenerator();
 
 
@@ -87,29 +82,23 @@ public class MainClass {
 		String dirTraduzione = asmFile.getParentFile().getPath() + "/Traduzione";
 
 		// AC
-		//File javaFile = new File(SRC_GEN + File.separator + name + ".java");
-    File javaFile = new File(dir.getPath() + File.separator + name + ".java");
+		File javaFile = new File(dir.getPath() + File.separator + name + ".java");
 		File javaFileCompilazione = new File(dirCompilazione + File.separator + name + ".java");
-		File javaFileExe = new File(dirEsecuzione + File.separator + name + "_Exe.java");
-		File javaFileExeN = new File(dirEsecuzione + File.separator + name + ".java");
+
 		File javaFileASM = new File(dirEsecuzione + File.separator + name + "_ASM.java");
 		File javaFileASMN = new File(dirEsecuzione + File.separator + name + ".java");
 
 		File javaFileT = new File(dirTraduzione + File.separator + name + ".java");
-		File javaFileExeT = new File(dirTraduzione + File.separator + name + "_Exe.java");
 		File javaFileASMT = new File(dirTraduzione + File.separator + name + "_ASM.java");
 
 		File stepFunctionArgs = new File(dir.getPath() + File.separator + "StepFunctionArgs" + ".txt");
 
 		deleteExisting(javaFile);
 		deleteExisting(javaFileCompilazione);
-		deleteExisting(javaFileExe);
-		deleteExisting(javaFileExeN);
 		deleteExisting(javaFileASM);
 		deleteExisting(javaFileASMN);
 		deleteExisting(javaFileASMT);
 		deleteExisting(javaFileT);
-		deleteExisting(javaFileExeT);
 		deleteExisting(stepFunctionArgs);
 
 		System.out.println("\n\n===" + name + " ===================");
@@ -117,15 +106,10 @@ public class MainClass {
 		// write java
 		try {
 			// Java Class
-		  jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
-		  jGenerator.compileAndWrite(model.getMain(),
+			jGenerator.compileAndWrite(model.getMain(), javaFile.getCanonicalPath(), userOptions);
+			jGenerator.compileAndWrite(model.getMain(),
 					javaFileCompilazione.getCanonicalPath(),
 					userOptions);
-
-			// EXE Class
-			jGeneratorExe.compileAndWrite(model.getMain(), javaFileExe.getCanonicalPath(), userOptions);
-			jGenerator.compileAndWrite(model.getMain(), javaFileExeN.getCanonicalPath(), userOptions);
-		  jGeneratorExe.compileAndWrite(model.getMain(), javaFileExeT.getCanonicalPath(), userOptions);
 
 			// ASM Class
 			jGeneratorASM.setFinalStateConditions(finalStateConditions);
@@ -148,17 +132,13 @@ public class MainClass {
 		}
 
 		System.out.println("Generated java file: " + javaFile.getCanonicalPath());
-		System.out.println("Generated java file: " + javaFileCompilazione.getCanonicalPath());
-		System.out.println("Generated java file: " + javaFileExeN.getCanonicalPath());
+		System.out.println("Generated java compiled file: " + javaFileCompilazione.getCanonicalPath());
 		System.out.println("Generated ASM java file: " + javaFileASMN.getCanonicalPath());
 		System.out.println("Generated parser support file: " + stepFunctionArgs.getCanonicalPath());
-
-		System.out.println("Generated java file for the execution: " + javaFileExe.getCanonicalPath());
 
 		System.out.println("All java files Generated in: " + javaFileT.getCanonicalPath());
 
 		exportFile(javaFile, outputFolder);
-		exportFile(javaFileExe, outputFolder);
 		exportFile(javaFileASM, outputFolder);
 		exportFile(stepFunctionArgs, outputFolder);
 
