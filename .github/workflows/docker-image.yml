@@ -37,5 +37,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./asmetal2java_asmgen
+          dockerfile: ./asmetal2java_asmgen/Dockerfile 
           push: true
           tags: isaacmaffeis/asmetal2java:latest
