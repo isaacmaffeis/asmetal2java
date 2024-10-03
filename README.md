@@ -1,5 +1,5 @@
 # Asmetal2java
-
+[![Static Badge](https://img.shields.io/badge/asmeta-main_repository-black?style=social&logo=github&link=https%3A%2F%2Fgithub.com%2Fasmeta%2Fasmeta)](https://github.com/asmeta/asmeta)
 [![Build and Push CI Pipeline](https://github.com/isaacmaffeis/asmetal2java/actions/workflows/maven-docker-pipeline.yml/badge.svg)](https://github.com/isaacmaffeis/asmetal2java/actions/workflows/maven-docker-pipeline.yml)
 
 Asmetal2java is a tool that automatically generates a Java file from an Abstract State Machine (ASM)
