@@ -80,7 +80,7 @@
     <!-- ASMETA dependencies -->
     <dependency>
       <groupId>asmeta</groupId>
-      <artifactId>asmeta.asmetal2java_codegen</artifactId>
+      <artifactId>asmetal2java_codegen</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>

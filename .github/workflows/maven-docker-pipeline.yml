@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    name: Build and Test
+    name: Build and Test with Maven
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,7 +25,15 @@ jobs:
       - name: Build with Maven
         run: mvn --batch-mode clean install
 
-      - name: Upload Artifact
+      - name: Upload Artifact codegen
+        if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          path: asmetal2java_codegen/target/asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          retention-days: 1
+
+      - name: Upload Artifact asmgen
         if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
         uses: actions/upload-artifact@v4
         with:
@@ -42,7 +50,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download artifact
+      - name: Download artifact codegen
+        uses: actions/download-artifact@v4
+        with:
+          name: asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          path: ./asmetal2java_codegen/target
+
+      - name: Download artifact asmgen
         uses: actions/download-artifact@v4
         with:
           name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
@@ -54,15 +68,25 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push
+      - name: Build and push codegen
+        uses: docker/build-push-action@v6
+        with:
+          context: ./asmetal2java_codegen
+          dockerfile: ./asmetal2java_codegen/Dockerfile
+          push: true
+          tags: isaacmaffeis/asmetal2java_codegen:latest
+
+      - name: Build and push asmgen
         uses: docker/build-push-action@v6
         with:
           context: ./asmetal2java_asmgen
           dockerfile: ./asmetal2java_asmgen/Dockerfile
           push: true
-          tags: isaacmaffeis/asmetal2java:latest
+          tags: isaacmaffeis/asmetal2java_asmgen:latest
 
-      - name: Delete Artifact
+      - name: Delete Artifacts
         uses: GeekyEggo/delete-artifact@v5.1.0
         with:
-          name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+          name: |
+            asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+            asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
