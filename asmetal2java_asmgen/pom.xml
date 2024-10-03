@@ -62,7 +62,7 @@
               <archive>
                 <manifest>
                   <mainClass>
-                    org.asmeta.asm2java.asm.MainClass
+                    org.asmeta.asm2java.asm.main.MainClass
                   </mainClass>
                 </manifest>
               </archive>
