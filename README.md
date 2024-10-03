@@ -38,7 +38,7 @@ This feature provides a hands-on approach to work with ASMs, enabling users to m
 
 ## How to Start:
 
-### Cloning the Repository
+### Using Maven
 1. Open PowerShell or your preferred terminal and clone the repository:
     ```shell
     git clone https://github.com/isaacmaffeis/asmetal2java.git
@@ -48,8 +48,6 @@ This feature provides a hands-on approach to work with ASMs, enabling users to m
     ```shell
     cd ./asmetal2java
     ```
-
-### Using Maven
 
 3. Install the project and generate the executable JAR:
     ```shell
@@ -87,28 +85,29 @@ This feature provides a hands-on approach to work with ASMs, enabling users to m
 
 ### Using Docker
 
-3. Open Docker Desktop and build the Docker image:
+1. Open Docker Desktop and pull the Docker image:
     ```shell
-    docker build -t asmetal2java_codegen .
+    docker pull isaacmaffeis/asmetal2java_codegen:latest
     ```
 
-4. Run the application within a Docker container:
+2. Run the application (print the help message) within a Docker container:
     ```shell
-    docker run --rm asmetal2java_codegen
+    docker run --rm isaacmaffeis/asmetal2java_codegen
     ```
 
-5. Customize execution by passing options:
+3. Mount the volumes and run:
     ```shell
-    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/asmetal2java_codegen/<output>:/app/asmetal2java_codegen/<output>" asmetal2java_codegen -input <input> -output <output> -D<property=value>
+    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/<output>:/app/<output>" isaacmaffeis/asmetal2java_codegen -input <input> -output <output> -D<property=value>
     ```
 
     - `-v "$(pwd)/<input>:/app/<input>"` : Maps the input file from the host to the container (required)
 
     - `-v "$(pwd)/<output>:/app/<output>"` : Maps the output folder from the host to the container (required, use `<output>` as `output` for the default path)
 
-6. Example of a use case:
+4. Example of a use case:
+   Inside the root directory `./amsetal2java/` run:
     ```shell
-    docker run --rm -v "$(pwd)/asmetal2java_codegen/examples:/app/asmetal2java_codegen/examples" -v "$(pwd)/asmetal2java_codegen/output:/app/output" asmetal2java_codegen -input "examples/RegistroDiCassa.asm" -output "output"
+    docker run --rm -v "$(pwd)/asmetal2java_codegen/examples:/app/input" -v "$(pwd)/asmetal2java_codegen/output:/app/output" isaacmaffeis/asmetal2java_codegen -input "input/RegistroDiCassa.asm" -output "output"
     ```
 # Asmetal2java_asmgen
 
@@ -167,32 +166,27 @@ the _ASM class produced by asmetal2java_asmgen is designed for automated process
 
 ### Using Docker
 
-3. Open Docker Desktop and build the Docker image:
+1. Open Docker Desktop and pull the Docker image:
     ```shell
-    docker build -t asmetal2java_asmgen .
+    docker pull isaacmaffeis/asmetal2java_asmgen:latest
     ```
 
-4. Run the application within a Docker container:
+2. Run the application (print the help message) within a Docker container:
     ```shell
-    docker run --rm asmetal2java_asmgen
+    docker run --rm isaacmaffeis/asmetal2java_asmgen
     ```
 
-5. Customize execution by passing options:
+3. Mount the volumes and run:
     ```shell
-    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/asmetal2java_asmgen/<output>:/app/asmetal2java_asmgen/<output>" asmetal2java_asmgen -input <input> -output <output> -D<property=value>
+    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/<output>:/app/<output>" isaacmaffeis/asmetal2java_asmgen -input <input> -output <output> -D<property=value>
     ```
 
     - `-v "$(pwd)/<input>:/app/<input>"` : Maps the input file from the host to the container (required)
 
     - `-v "$(pwd)/<output>:/app/<output>"` : Maps the output folder from the host to the container (required, use `<output>` as `output` for the default path)
 
-    - `-input` : The ASM input file (required)
-
-    - `-output` : Output folder (optional, defaults to `./output/`)
-
-    - `-D <property=value>` : Additional properties (optional, see `-help` for more info)
-
-6. Example of a use case:
+4. Example of a use case:
+   Inside the root directory `./amsetal2java/` run:
     ```shell
-    docker run --rm -v "$(pwd)/asmetal2java_asmgen/examples:/app/asmetal2java_asmgen/examples" -v "$(pwd)/asmetal2java_asmgen/output:/app/output" asmetal2java_asmgen -input "examples/RegistroDiCassav4.asm" -output "output"
+    docker run --rm -v "$(pwd)/asmetal2java_asmgen/examples:/app/input" -v "$(pwd)/asmetal2java_asmgen/output:/app/output" isaacmaffeis/asmetal2java_asmgen -input "input/RegistroDiCassav4.asm" -output "output"
     ```
