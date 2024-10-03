@@ -39,26 +39,19 @@ of tools for creating, simulating, verifying, and analyzing ASM models.
 
 ### Using Maven
 
-3. Package the core projects to compile the necessary components:
+3. Install the project and generate the executable JAR:
     ```shell
-    cd ./core
-    mvn clean package
+    mvn clean install
     ```
 
-4. Generate and install the executable JAR file with all dependencies included:
-     ```shell
-     cd ../asmetal2java_codegen
-     mvn clean install
+4. Start the application by running the generated JAR file:
+    ```shell
+    java -jar ./asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
      ```
 
-5. Start the application by running the generated JAR file:
+5. Customize execution with additional options:
     ```shell
-    java -jar ./target/asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
-     ```
-
-6. Customize execution with additional options:
-    ```shell
-    java -jar ./target/asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar -input <input> -output <output> -D<property=value>
+    java -jar ./asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar -input <input> -output <output> -D<property=value>
     ```
     - `-input` : The ASM input file (required)
 
@@ -67,9 +60,9 @@ of tools for creating, simulating, verifying, and analyzing ASM models.
     - `-D <property=value>` : Additional properties (optional, see `-help` for more info)
 
 
-7. Example of a use case:
+6. Example of a use case:
     ```shell
-    java -jar ./target/asmetal2java_codegen-0.0.1-SNAPSHOT-jar-with-dependencies.jar -input "examples/RegistroDiCassa.asm" -output "../asmetal2java_examples/src/" -Dformatter=true
+    java -jar ./asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar -input "examples/RegistroDiCassa.asm" -output "../asmetal2java_examples/src/" -Dformatter=true
      ```
 
 ### Using Docker
