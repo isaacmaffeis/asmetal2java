@@ -59,7 +59,7 @@ jobs:
           context: ./asmetal2java_asmgen
           dockerfile: ./asmetal2java_asmgen/Dockerfile
           build-args:
-            JAR_FILE=./target/asmetal2java_asmgen-0.0.1-SNAPSHOT.jar
+            JAR_FILE=./target/artifact-asmetal2java_asmgen-jar
           push: true
           tags: isaacmaffeis/asmetal2java:latest
 
