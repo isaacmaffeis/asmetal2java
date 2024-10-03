@@ -28,6 +28,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
+          if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
           name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           path: asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           retention-days: 1
