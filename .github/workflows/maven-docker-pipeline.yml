@@ -28,7 +28,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: artifact-asmetal2java_asmgen-jar
+          name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           path: asmetal2java_asmgen/target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           retention-days: 1
 
@@ -44,8 +44,11 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: artifact-asmetal2java_asmgen-jar
+          name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           path: ./asmetal2java_asmgen/target
+
+      - name: List files in target directory
+        run: ls -la ./asmetal2java_asmgen/target
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -59,11 +62,11 @@ jobs:
           context: ./asmetal2java_asmgen
           dockerfile: ./asmetal2java_asmgen/Dockerfile
           build-args:
-            JAR_FILE=./target/artifact-asmetal2java_asmgen-jar
+            JAR_FILE=./target/asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
           push: true
           tags: isaacmaffeis/asmetal2java:latest
 
       - name: Delete Artifact
         uses: GeekyEggo/delete-artifact@v5.1.0
         with:
-          name: artifact-asmetal2java_asmgen-jar
+          name: asmetal2java_asmgen-0.0.1-SNAPSHOT-jar-with-dependencies.jar
