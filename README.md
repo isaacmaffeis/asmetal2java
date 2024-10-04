@@ -97,12 +97,12 @@ This feature provides a hands-on approach to work with ASMs, enabling users to m
 
 3. Mount the volumes and run:
     ```shell
-    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/<output>:/app/<output>" isaacmaffeis/asmetal2java_codegen -input <input> -output <output> -D<property=value>
+    docker run --rm -v "$(pwd)/<input>:/app/input" -v "$(pwd)/<output>:/app/output" isaacmaffeis/asmetal2java_codegen -input <input> -output <output> -D<property=value>
     ```
 
-    - `-v "$(pwd)/<input>:/app/<input>"` : Maps the input file from the host to the container (required)
+    - `-v "$(pwd)/<input>:/app/input"` : Maps the input file from the host to the container (required)
 
-    - `-v "$(pwd)/<output>:/app/<output>"` : Maps the output folder from the host to the container (required, use `<output>` as `output` for the default path)
+    - `-v "$(pwd)/<output>:/app/output"` : Maps the output folder from the host to the container (required)
 
 4. Example of a use case:
    Inside the root directory `./amsetal2java/` run:
@@ -117,7 +117,7 @@ the _ASM class produced by asmetal2java_asmgen is designed for automated process
 
 ## How to Start:
 
-### Cloning the Repository
+### Using Maven
 1. Open PowerShell or your preferred terminal and clone the repository:
     ```shell
     git clone https://github.com/isaacmaffeis/asmetal2java.git
@@ -127,9 +127,7 @@ the _ASM class produced by asmetal2java_asmgen is designed for automated process
     ```shell
     cd ./asmetal2java
     ```
-
-### Using Maven
-
+    
 3. Install the project and generate the executable JAR:
     ```shell
     mvn clean install
@@ -178,12 +176,12 @@ the _ASM class produced by asmetal2java_asmgen is designed for automated process
 
 3. Mount the volumes and run:
     ```shell
-    docker run --rm -v "$(pwd)/<input>:/app/<input>" -v "$(pwd)/<output>:/app/<output>" isaacmaffeis/asmetal2java_asmgen -input <input> -output <output> -D<property=value>
+    docker run --rm -v "$(pwd)/<input>:/app/input" -v "$(pwd)/<output>:/app/output" isaacmaffeis/asmetal2java_asmgen -input <input> -output <output> -D<property=value>
     ```
 
-    - `-v "$(pwd)/<input>:/app/<input>"` : Maps the input file from the host to the container (required)
+    - `-v "$(pwd)/<input>:/app/input"` : Maps the input file from the host to the container (required)
 
-    - `-v "$(pwd)/<output>:/app/<output>"` : Maps the output folder from the host to the container (required, use `<output>` as `output` for the default path)
+    - `-v "$(pwd)/<output>:/app/output"` : Maps the output folder from the host to the container (required)
 
 4. Example of a use case:
    Inside the root directory `./amsetal2java/` run:
