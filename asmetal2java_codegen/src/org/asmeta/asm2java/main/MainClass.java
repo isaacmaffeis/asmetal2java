@@ -324,18 +324,32 @@ public class MainClass {
 	 * @param args the command-line arguments.
 	 */
 	public static void main(String[] args) {
-		
+
+		String asciiart =
+				"\n    _                       _        _ ____   _                  \n"
+						+ "   / \\   ___ _ __ ___   ___| |_ __ _| |___ \\ (_) __ ___   ____ _ \n"
+						+ "  / _ \\ / __| '_ ` _ \\ / _ \\ __/ _` | | __) || |/ _` \\ \\ / / _` |\n"
+						+ " / ___ \\\\__ \\ | | | | |  __/ || (_| | |/ __/ | | (_| |\\ V / (_| |\n"
+						+ "/_/   \\_\\___/_| |_| |_|\\___|\\__\\__,_|_|_____|/ |\\__,_| \\_/ \\__,_|\n"
+						+ "                                           |__/                  \n"
+						+ "\t\t\t\t\t               _                       \n"
+						+ "\t\t\t\t\t  ___ ___   __| | ___  __ _  ___ _ __  \n"
+						+ "\t\t\t\t\t / __/ _ \\ / _` |/ _ \\/ _` |/ _ \\ '_ \\ \n"
+						+ "\t\t\t\t\t| (_| (_) | (_| |  __/ (_| |  __/ | | |\n"
+						+ "\t\t\t\t\t \\___\\___/ \\__,_|\\___|\\__, |\\___|_| |_|\n"
+						+ "\t\t\t\t\t                      |___/            ";
+
 		try {
 			MainClass main = new MainClass ();
 			Options options = getCommandLineOptions();
 			CommandLine line = main.parseCommandLine(args, options);
-			logger.info("Performing requested operation ...");
+			logger.info(asciiart);
 			if (line == null || line.hasOption("help") || line.getOptions().length == 0) {
 				HelpFormatter formatter = new HelpFormatter();
 				// Do not sort				
 				formatter.setOptionComparator(null);
 				// Header and footer strings
-				String header = "Asmetal2java\n\n";
+				String header = "Asmetal2java_codegen";
 				String footer = "\nthis project is part of Asmeta, see https://github.com/asmeta/asmeta "
 						+ "for information or to report problems";
 				 

@@ -27,7 +27,6 @@ import org.asmeta.asm2java.main.JavaASMGenerator;
 import org.asmeta.asm2java.main.JavaGenerator;
 import org.asmeta.asm2java.main.TranslatorOptions;
 import org.asmeta.parser.ASMParser;
-
 import asmeta.AsmCollection;
 
 /**
@@ -360,24 +359,31 @@ public class MainClass {
 	 * @param args the command-line arguments.
 	 */
 	public static void main(String[] args) {
+
+		String asciiart =
+				      "\n    _                       _        _ ____   _                  \n"
+						+ "   / \\   ___ _ __ ___   ___| |_ __ _| |___ \\ (_) __ ___   ____ _ \n"
+						+ "  / _ \\ / __| '_ ` _ \\ / _ \\ __/ _` | | __) || |/ _` \\ \\ / / _` |\n"
+						+ " / ___ \\\\__ \\ | | | | |  __/ || (_| | |/ __/ | | (_| |\\ V / (_| |\n"
+						+ "/_/   \\_\\___/_| |_| |_|\\___|\\__\\__,_|_|_____|/ |\\__,_| \\_/ \\__,_|\n"
+						+ "                                           |__/                  \n"
+						+ "\t\t\t\t\t  __ _ ___ _ __ ___   __ _  ___ _ __  \n"
+						+ "\t\t\t\t\t / _` / __| '_ ` _ \\ / _` |/ _ \\ '_ \\ \n"
+						+ "\t\t\t\t\t| (_| \\__ \\ | | | | | (_| |  __/ | | |\n"
+						+ "\t\t\t\t\t \\__,_|___/_| |_| |_|\\__, |\\___|_| |_|\n"
+						+ "\t\t\t\t\t                     |___/            ";
 		
 		try {
 			MainClass main = new MainClass ();
 			Options options = getCommandLineOptions();
 			CommandLine line = main.parseCommandLine(args, options);
-			logger.info("\r\n    _                       _        _ ____   _                  \r\n"
-					+ "   / \\   ___ _ __ ___   ___| |_ __ _| |___ \\ (_) __ ___   ____ _ \r\n"
-					+ "  / _ \\ / __| '_ ` _ \\ / _ \\ __/ _` | | __) || |/ _` \\ \\ / / _` |\r\n"
-					+ " / ___ \\\\__ \\ | | | | |  __/ || (_| | |/ __/ | | (_| |\\ V / (_| |\r\n"
-					+ "/_/   \\_\\___/_| |_| |_|\\___|\\__\\__,_|_|_____|/ |\\__,_| \\_/ \\__,_|\r\n"
-					+ "                                           |__/                  \r\n");
-			logger.info("Performing requested operation ...");
+			logger.info(asciiart);
 			if (line == null || line.hasOption("help") || line.getOptions().length == 0) {
 				HelpFormatter formatter = new HelpFormatter();
 				// Do not sort				
 				formatter.setOptionComparator(null);
 				// Header and footer strings
-				String header = "Asmetal2java\n\n";
+				String header = "Asmetal2java_asmgen";
 				String footer = "\nthis project is part of Asmeta, see https://github.com/asmeta/asmeta "
 						+ "for information or to report problems";
 				 
