@@ -4,7 +4,7 @@
 
 asm VideotecaASM
 
-import StandardLibrary
+import STDL/StandardLibrary
 
 //declare universes and functions
 

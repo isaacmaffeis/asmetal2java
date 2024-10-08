@@ -1,6 +1,6 @@
 *.asm
 *.java
 *.txt
-!StandardLibrary.asm
-!CTLLibrary.asm
-!LTLLibrary.asm
+!STDL/StandardLibrary.asm
+!STDL/CTLLibrary.asm
+!STDL/LTLLibrary.asm
