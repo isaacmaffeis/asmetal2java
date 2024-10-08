@@ -2,9 +2,9 @@
 
 asm Ascensore
 
-import StandardLibrary
-import CTLLibrary
-import LTLLibrary
+import STDL/StandardLibrary
+import STDL/CTLLibrary
+import STDL/LTLLibrary
 
 
 signature:
@@ -19,18 +19,18 @@ signature:
 
 definitions:
 	
-	//Se il bottore viene premuto, nel prossimo stato la porta sarà aperta
+	//Se il bottore viene premuto, nel prossimo stato la porta sarï¿½ aperta
 	CTLSPEC ag(signalPorta implies ax(statoPorta = APERTA))
 	
-	//Prima o poi la porta si aprirà
+	//Prima o poi la porta si aprirï¿½
 	CTLSPEC ef(statoPorta = APERTA)
 	
-	//Quando la porta è aperta, rimane aperta fino a quando 
+	//Quando la porta ï¿½ aperta, rimane aperta fino a quando 
 	//		signalPorta torna a false (se torna a false)
 	CTLSPEC ag(statoPorta = APERTA implies aw(statoPorta = APERTA, not(signalPorta)))
 	
 	//Il piano nello stato successivo rimane lo stesso se 
-	//se signalPorta è true 
+	//se signalPorta ï¿½ true 
 	CTLSPEC ag((statoPiano = UNO and signalPorta implies ax(statoPiano = UNO)) or (statoPiano = DUE and signalPorta implies ax(statoPiano = DUE)))
 	
 	
