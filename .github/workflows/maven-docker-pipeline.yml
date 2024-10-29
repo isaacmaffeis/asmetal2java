@@ -22,8 +22,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build with Maven
-        run: mvn --batch-mode clean install
+      - name: Build and test with Maven
+        run: mvn --batch-mode clean verify
 
       - name: Upload Artifact codegen
         if: github.ref == 'refs/heads/main' || github.event.pull_request.base.ref == 'main'
